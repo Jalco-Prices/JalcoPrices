@@ -1,12 +1,22 @@
-// Models
-import { AnyProductType } from "@/models/ProductModel"
+'use client';
+
+// Context
+import { useProducts } from "@/context/ProductsContext"
 
 
-export default function CatalogComponent(
-    { products }
-    :
-    { readonly products: AnyProductType[] }
-) {
+export default function CatalogComponent() {
+    const { products, error } = useProducts()
+
+    if (error) {
+        return (
+            <section className="section-container">
+                <h1 className="section-title-label">
+                    Error al cargar los productos: {error}
+                </h1>
+            </section>
+        )
+    }
+
     return (
         <section className="section-container">
             {/* Title */}
