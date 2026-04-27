@@ -21,7 +21,7 @@
 }
 
 .navbar-user-profile-button-container {
-    @apply h-7;
+    @apply h-7 border;
 }
 
 .navbar-user-profile-button {

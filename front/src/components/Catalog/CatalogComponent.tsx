@@ -1,7 +1,12 @@
+// Models
+import { AnyProductType } from "@/models/ProductModel"
 
 
-
-export default function CatalogComponent() {
+export default function CatalogComponent(
+    { products }
+    :
+    { readonly products: AnyProductType[] }
+) {
     return (
         <section className="section-container">
             {/* Title */}

@@ -146,3 +146,8 @@ body {
   @apply font-inter text-primary
     text-h2 lg:text-h1;
 }
+
+.auth-container {
+  @apply h-[calc(100vh-4rem)] w-svw flex justify-center items-center
+    mt-16;
+}

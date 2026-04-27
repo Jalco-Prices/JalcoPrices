@@ -3,7 +3,7 @@
 import "@/styles/Global/NavbarStyle.css";
 
 // Components
-import { SearchIcon, UserCircleIcon } from "@/icons/Icons";
+import { SearchIcon } from "@/icons/Icons";
 // Texts
 import { menuContentNavLinks } from "@/texts/Navbar";
 // Utils
@@ -31,55 +31,42 @@ export default function NavbarComponent() {
             </button>
 
             {/* Right Wrapper */}
-            <div className="navbar-right-wrapper">
-                {/* Search Icon */}
-                <button
-                    className="navbar-search-button"
-                    onClick={() => {
-                        setIsSearchOpen(!isSearchOpen);
-                        if (!isSearchOpen) {
-                            setTimeout(() => {
-                                const searchInput = document.getElementById("search-input-id") as HTMLInputElement;
-                                if (searchInput) {
-                                    searchInput.focus();
-                                }
-                            }, 100);
-                        }
-                    }}
-                >
-                    <SearchIcon
-                        size={"fill"}
-                    />
-                </button>
+            {user &&
+                <div className="navbar-right-wrapper">
+                    {/* Search Icon */}
+                    <button
+                        className="navbar-search-button"
+                        onClick={() => {
+                            setIsSearchOpen(!isSearchOpen);
+                            if (!isSearchOpen) {
+                                setTimeout(() => {
+                                    const searchInput = document.getElementById("search-input-id") as HTMLInputElement;
+                                    if (searchInput) {
+                                        searchInput.focus();
+                                    }
+                                }, 100);
+                            }
+                        }}
+                    >
+                        <SearchIcon
+                            size={"fill"}
+                        />
+                    </button>
 
-                {/* User Profile Button */}
-                <div className="navbar-user-profile-button-container">
-                    {!user &&
-                        <button
-                            className="navbar-user-profile-button"
-                            onClick={() => router.push("/log-in")}
-                        >
-                            <UserCircleIcon
-                                size={"fill"}
-                            />
-                        </button>
-                    }
+                    {/* User Profile Button */}
+                    <UserButton />
 
-                    {user &&
-                        <UserButton />
-                    }
+                    {/* Menu Button */}
+                    <button
+                        className={`menu-button ${isMenuOpen ? 'open' : ''}`}
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    >
+                        <span className="menu-button-bar menu-button-bar1" />
+                        <span className="menu-button-bar menu-button-bar2" />
+                        <span className="menu-button-bar menu-button-bar3" />
+                    </button>
                 </div>
-
-                {/* Menu Button */}
-                <button
-                    className={`menu-button ${isMenuOpen ? 'open' : ''}`}
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                >
-                    <span className="menu-button-bar menu-button-bar1" />
-                    <span className="menu-button-bar menu-button-bar2" />
-                    <span className="menu-button-bar menu-button-bar3" />
-                </button>
-            </div>
+            }
 
             {/* Search Input Container */}
             <div className={`search-input-container ${isSearchOpen ? 'open' : ''}`}>
