@@ -147,7 +147,15 @@ body {
     text-h2 lg:text-h1;
 }
 
+.full-overlay {
+  @apply absolute z-60 top-0 left-0 h-svh w-svw;
+}
+
 .auth-container {
   @apply h-[calc(100vh-4rem)] w-svw flex justify-center items-center
     mt-16;
+}
+
+.error-text {
+  @apply text-gray-600 text-body-md;
 }

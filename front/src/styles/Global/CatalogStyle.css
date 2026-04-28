@@ -1,0 +1,6 @@
+@import "../../app/globals.css";
+
+
+.catalog-selects-container {
+    @apply flex justify-end gap-2;
+}

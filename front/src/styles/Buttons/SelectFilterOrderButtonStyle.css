@@ -1,0 +1,31 @@
+@import "../../app/globals.css";
+
+
+.select-filter-order-section-container {
+    @apply w-fit flex flex-col;
+}
+
+.select-filter-order-button {
+    @apply w-full h-10 px-4 flex items-center justify-center gap-2 border rounded-lg transition-colors
+    text-sm font-medium
+    hover:cursor-pointer
+    border-outline-variant bg-white hover:bg-surface-container;
+}
+
+.select-filter-order-button.open {
+    @apply rounded-b-none border-b-0;
+}
+
+.select-filter-order-button-icon {
+    @apply h-3.5;
+}
+
+.select-filter-order-options-container {
+    @apply z-70 overflow-hidden border rounded-b-lg
+    border-outline-variant bg-white;
+}
+
+.select-filter-order-option {
+    @apply px-4 py-2 transition-colors text-sm text-center font-medium cursor-pointer
+    hover:bg-surface-container;
+}

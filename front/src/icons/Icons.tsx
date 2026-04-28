@@ -1,4 +1,4 @@
-import { IconSearch, IconUserCircle } from '@tabler/icons-react';
+import { IconSearch, IconUserCircle, IconFilter2, IconSortDescending } from '@tabler/icons-react';
 
 
 export const SearchIcon = (
@@ -18,5 +18,25 @@ export const UserCircleIcon = (
 ) => {
     return (
         <IconUserCircle size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const FilterIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconFilter2 size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const SortDescendingIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconSortDescending size={size} stroke={stroke} color={color} />
     )
 }
