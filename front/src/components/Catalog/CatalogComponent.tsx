@@ -4,6 +4,7 @@ import "@/styles/Global/CatalogStyle.css";
 
 // Components
 import SelectFilterOrderButtonComponent from "../Buttons/SelectFilterOrderButtonComponent";
+import CatalogProductsGridComponent from "./CatalogProductsGridComponent";
 // Context
 import { useProducts } from "@/context/ProductsContext"
 // Utils
@@ -48,30 +49,44 @@ export default function CatalogComponent() {
                 Catálogo de Productos
             </h1>
 
-            {/* Selects Filter & Order Container */}
-            <div className="catalog-selects-container">
-                {/* Filter Select Button */}
-                <SelectFilterOrderButtonComponent
-                    label="Filtrar"
-                    iconName="filter"
-                    options={filtersOptions}
-                    isShowingOptions={isShowingFilters}
-                    setIsShowingOptions={setIsShowingFilters}
-                    setSelectedOption={setSelectedFilter}
-                />
+            {/* Amount products & Selects Wrapper */}
+            <div className="catalog-amount-products-selects-wrapper">
+                <p className="catalog-amount-products">
+                    Mostrando: {products.length} {products.length === 1 ? "producto" : "productos"}.
+                </p>
 
-                {/* Order Select Button */}
-                <SelectFilterOrderButtonComponent
-                    label="Ordenar"
-                    iconName="sort"
-                    options={orderOptions}
-                    isShowingOptions={isShowingOrderOptions}
-                    setIsShowingOptions={setIsShowingOrderOptions}
-                    setSelectedOption={setSelectedOrder}
-                />
+                {/* Selects Filter & Order Container */}
+                <div className="catalog-selects-container">
+                    {/* Filter Select Button */}
+                    <SelectFilterOrderButtonComponent
+                        label="Filtrar"
+                        iconName="filter"
+                        options={filtersOptions}
+                        isShowingOptions={isShowingFilters}
+                        setIsShowingOptions={setIsShowingFilters}
+                        setSelectedOption={setSelectedFilter}
+                    />
+
+                    {/* Order Select Button */}
+                    <SelectFilterOrderButtonComponent
+                        label="Ordenar"
+                        iconName="sort"
+                        options={orderOptions}
+                        isShowingOptions={isShowingOrderOptions}
+                        setIsShowingOptions={setIsShowingOrderOptions}
+                        setSelectedOption={setSelectedOrder}
+                    />
+                </div>
             </div>
 
             {/* Products Grid */}
+            <div className="catalog-products-grid-wrapper">
+                <CatalogProductsGridComponent
+                    products={products}
+                    filter={selectedFilter}
+                    order={selectedOrder}
+                />
+            </div>
 
             {/* Carrousel Buttons */}
         </section>

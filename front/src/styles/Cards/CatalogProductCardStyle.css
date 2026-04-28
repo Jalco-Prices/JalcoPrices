@@ -1,0 +1,60 @@
+@import "../../app/globals.css";
+
+
+.catalog-product-card-container {
+    @apply overflow-hidden flex flex-col rounded-lg border cursor-pointer
+    transition-all duration-300
+    hover:shadow-lg hover:-translate-y-1
+    border-outline-variant bg-white;
+}
+
+.catalog-product-card-image-container {
+    @apply overflow-hidden aspect-square relative border-b
+    border-outline-variant bg-surface-container-low;
+}
+
+.catalog-product-card-image {
+    @apply w-full h-full object-cover
+    transition-transform duration-500;
+}
+
+.catalog-product-card-stock-status-container {
+    @apply absolute top-3 right-3;
+}
+
+.catalog-product-card-stock-status-available {
+    @apply text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider
+    bg-green-100 text-green-800;
+}
+
+.catalog-product-card-stock-status-unavailable {
+    @apply text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider
+    bg-amber-100 text-amber-800;
+}
+
+.catalog-product-card-info-container {
+    @apply flex-1 flex flex-col justify-between p-md;
+}
+
+.catalog-product-card-info-name {
+    @apply text-start font-inter text-lg transition-colors
+    text-on-surface;
+}
+
+.catalog-product-card-prices-container {
+    @apply flex justify-between items-center mt-sm;
+}
+
+.catalog-product-card-price-wrapper {
+    @apply flex items-center gap-1;
+}
+
+.catalog-product-card-price-label {
+    @apply font-inter
+    text-on-surface-variant;
+}
+
+.catalog-product-card-price {
+    @apply font-bold
+    text-on-surface;
+}
