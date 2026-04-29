@@ -5,6 +5,7 @@ import "@/styles/Global/CatalogStyle.css";
 // Components
 import SelectFilterOrderButtonComponent from "../Buttons/SelectFilterOrderButtonComponent";
 import CatalogProductsGridComponent from "./CatalogProductsGridComponent";
+import PaginationActionsComponent from "../Buttons/PaginationActionsComponent";
 // Context
 import { useProducts } from "@/context/ProductsContext"
 // Utils
@@ -14,8 +15,6 @@ import { useState } from "react";
 const filtersOptions = [
     { label: "Envase", value: "container" },
     { label: "Capacidad", value: "capacity" },
-    { label: "Material", value: "material" },
-    { label: "Color", value: "color" },
 ]
 
 const orderOptions = [
@@ -31,6 +30,24 @@ export default function CatalogComponent() {
     const [isShowingOrderOptions, setIsShowingOrderOptions] = useState(false)
     const [selectedFilter, setSelectedFilter] = useState<string | null>(null)
     const [selectedOrder, setSelectedOrder] = useState<string | null>(null)
+    const [currentPage, setCurrentPage] = useState(1)
+
+    const PRODUCTS_PER_PAGE = 8
+    const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE)
+    const paginatedProducts = products.slice(
+        (currentPage - 1) * PRODUCTS_PER_PAGE,
+        currentPage * PRODUCTS_PER_PAGE
+    )
+
+    const handleFilterChange = (filter: string | null) => {
+        setSelectedFilter(filter)
+        setCurrentPage(1)
+    }
+
+    const handleOrderChange = (order: string | null) => {
+        setSelectedOrder(order)
+        setCurrentPage(1)
+    }
 
     if (error) {
         return (
@@ -64,7 +81,7 @@ export default function CatalogComponent() {
                         options={filtersOptions}
                         isShowingOptions={isShowingFilters}
                         setIsShowingOptions={setIsShowingFilters}
-                        setSelectedOption={setSelectedFilter}
+                        setSelectedOption={handleFilterChange}
                     />
 
                     {/* Order Select Button */}
@@ -74,7 +91,7 @@ export default function CatalogComponent() {
                         options={orderOptions}
                         isShowingOptions={isShowingOrderOptions}
                         setIsShowingOptions={setIsShowingOrderOptions}
-                        setSelectedOption={setSelectedOrder}
+                        setSelectedOption={handleOrderChange}
                     />
                 </div>
             </div>
@@ -82,13 +99,20 @@ export default function CatalogComponent() {
             {/* Products Grid */}
             <div className="catalog-products-grid-wrapper">
                 <CatalogProductsGridComponent
-                    products={products}
+                    products={paginatedProducts}
                     filter={selectedFilter}
                     order={selectedOrder}
                 />
             </div>
 
-            {/* Carrousel Buttons */}
+            {/* Pagination Actions */}
+            <div className="catalog-pagination-actions-wrapper">
+                <PaginationActionsComponent
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    setCurrentPage={setCurrentPage}
+                />
+            </div>
         </section>
     )
 }

@@ -138,12 +138,12 @@ body {
 .section-container {
   @apply flex flex-col
     px-4 lg:px-8
-    py-3 lg:py-4
+    py-3 lg:py-9
     gap-5;
 }
 
 .section-title-label {
-  @apply mt-5 font-inter text-primary
+  @apply font-inter text-primary
     text-h2 lg:text-h1;
 }
 
