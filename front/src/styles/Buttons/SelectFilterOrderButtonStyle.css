@@ -2,11 +2,12 @@
 
 
 .select-filter-order-section-container {
-    @apply w-fit flex flex-col;
+    @apply w-fit flex flex-col relative;
 }
 
 .select-filter-order-button {
-    @apply w-full h-10 px-4 flex items-center justify-center gap-2 border rounded-lg transition-colors
+    width: fit-content;
+    @apply h-10 px-4 flex items-center justify-center gap-2 border rounded-lg transition-colors
     text-sm font-medium
     hover:cursor-pointer
     border-outline-variant bg-white hover:bg-surface-container;
@@ -21,11 +22,24 @@
 }
 
 .select-filter-order-options-container {
-    @apply z-70 overflow-hidden border rounded-b-lg
-    border-outline-variant bg-white;
+    box-shadow: 
+        -4px 4px 16px rgba(0, 0, 0, 0.08),
+        4px 4px 16px rgba(0, 0, 0, 0.08),
+        0px 6px 16px rgba(0, 0, 0, 0.08);
+    @apply absolute top-full right-0 z-70 overflow-hidden border rounded-b-lg
+    border-outline-variant bg-white w-max;
 }
 
 .select-filter-order-option {
     @apply px-4 py-2 transition-colors text-sm text-center font-medium cursor-pointer
     hover:bg-surface-container;
+}
+
+
+.select-filter-order-section-container:has(.select-filter-order-button.open) {
+    box-shadow: 
+        -4px 0px 16px rgba(0, 0, 0, 0.08),
+        4px 0px 16px rgba(0, 0, 0, 0.08),
+        0px -4px 16px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
 }
