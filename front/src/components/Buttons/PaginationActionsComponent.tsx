@@ -23,7 +23,7 @@ export default function PaginationActionsComponent(
             return [1, '...', ...endPages]
         }
 
-        return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages]
+        return [1, '...', currentPage, '...', totalPages]
     }
 
     const visiblePages = getVisiblePages()

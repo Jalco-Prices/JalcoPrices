@@ -27,6 +27,8 @@ export default function CatalogProductCardComponent(
                     src={product.imagen == "" || product.imagen == null ? ImageNotFound : product.imagen}
                     className="group-hover:scale-110 catalog-product-card-image"
                     fill
+                    sizes="undefined"
+                    loading="eager"
                 />
                 
                 {/* Stock Status */}
