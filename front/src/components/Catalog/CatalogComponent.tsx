@@ -9,7 +9,7 @@ import PaginationActionsComponent from "../Buttons/PaginationActionsComponent";
 // Context
 import { useProducts } from "@/context/ProductsContext"
 // Utils
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 
 const filtersOptions = [
@@ -32,6 +32,8 @@ export default function CatalogComponent() {
     const [selectedOrder, setSelectedOrder] = useState<string | null>(null)
     const [currentPage, setCurrentPage] = useState(1)
 
+    const paginationRef = useRef<HTMLDivElement>(null)
+
     const PRODUCTS_PER_PAGE = 8
     const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE)
     const paginatedProducts = products.slice(
@@ -49,6 +51,16 @@ export default function CatalogComponent() {
         setCurrentPage(1)
     }
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page)
+        setTimeout(() => {
+            paginationRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+            })
+        })
+    }
+
     if (error) {
         return (
             <section className="section-container">
@@ -60,7 +72,7 @@ export default function CatalogComponent() {
     }
 
     return (
-        <section className="section-container">
+        <section ref={paginationRef} className="section-container">
             {/* Title */}
             <h1 className="section-title-label">
                 Catálogo de Productos
@@ -106,11 +118,14 @@ export default function CatalogComponent() {
             </div>
 
             {/* Pagination Actions */}
-            <div className="catalog-pagination-actions-wrapper">
+            <div
+                
+                className="catalog-pagination-actions-wrapper"
+            >
                 <PaginationActionsComponent
                     currentPage={currentPage}
                     totalPages={totalPages}
-                    setCurrentPage={setCurrentPage}
+                    setCurrentPage={handlePageChange}
                 />
             </div>
         </section>
