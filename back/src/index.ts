@@ -1,5 +1,6 @@
 // Utils
 import express from 'express'
+import cors from 'cors'
 import dotenv from 'dotenv'
 import connectDB from './db/connect'
 
@@ -11,7 +12,14 @@ import productRoutes from './routes/products'
 dotenv.config()
 
 const app = express()
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT
+
+// Cors
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}))
 
 app.use(express.json())
 
@@ -26,5 +34,4 @@ const start = async (): Promise<void> => {
         console.log(`✅ Servidor corriendo en http://localhost:${PORT}`)
     })
 }
-
 start()

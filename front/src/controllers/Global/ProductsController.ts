@@ -1,0 +1,58 @@
+'use server';
+
+// Models
+import { AnyProductType } from "@/models/ProductModel"
+
+const { API_URL } = process.env
+
+if (!API_URL) {
+    throw new Error('API_URL is not defined in environment variables')
+}
+
+
+export const getAllProducts = async (token: string) => {
+    try {
+        const response = await fetch(`${API_URL}/products`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+            return { error: data.error }
+        }
+
+        return { products: data }
+    } catch (error) {
+        console.error('getAllProducts:', (error as Error).message)
+        return { error: 'Error al obtener todos los productos' }
+    }
+}
+
+export const updateProduct = async (token: string, productData: AnyProductType) => {
+    try {
+        const response = await fetch(`${API_URL}/products`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(productData)
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+            return { error: data.error }
+        }
+
+        return { message: data.message }
+    } catch (error) {
+        console.error('updateProduct:', (error as Error).message)
+        return { error: 'Error al actualizar el producto' }
+    }
+}

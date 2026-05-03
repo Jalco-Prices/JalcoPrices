@@ -19,7 +19,7 @@ export interface IProduct extends Document {
 
 const ProductSchema = new Schema<IProduct>(
     {
-        nombre: { type: String, required: true },
+        nombre: { type: String, required: true, unique: true },
         nombreGenerico: { type: String, required: true },
         categoria: { type: String, required: true },
         precioMayoreo: { type: Number, default: 0 },

@@ -42,8 +42,8 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
 
         ;(req as any).user = user
         next()
-    } catch {
-        console.error('Error de autenticación')
+    } catch (error) {
+        console.error('Error de autenticación:', error)
         res.status(401).json({ error: 'No autorizado' })
     }
 }

@@ -4,7 +4,7 @@ import "./globals.css";
 import { ProductsProvider } from "@/context/ProductsContext";
 import NavbarComponent from "@/components/Navbar/NavbarComponent";
 // Controllers
-import { getAllProducts } from "@/controllers/Pages/CatalogPageController";
+import { getAllProducts } from "@/controllers/Global/ProductsController";
 // Models
 import { AnyProductType } from "@/models/ProductModel";
 // Utils

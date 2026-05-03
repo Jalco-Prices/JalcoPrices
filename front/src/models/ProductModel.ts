@@ -17,6 +17,8 @@ export type ProductType = {
     codigoDeBarras: string
     imagen: string
     vecesVisto: number
+    createdAt: string
+    updatedAt: string
 }
 
 export type ProductPublicType = Pick<ProductType,
@@ -26,5 +28,5 @@ export type ProductPublicType = Pick<ProductType,
 export type AnyProductType = ProductType | ProductPublicType
 
 export const isAdminProduct = (product: AnyProductType): product is ProductType => {
-    return 'precioMayoreo' in product
+    return 'precioTienda' in product
 }
