@@ -16,7 +16,7 @@ function InputComponent(
             className={`
                 no-spinner w-full py-sm rounded border font-inter focus:outline-none border-outline-variant
                 ${symbol ? "pl-4 pr-13" : "px-md"}
-                ${isOnlyRead ? "bg-surface-container-low" : "focus:ring-2 transition-all bg-white focus:ring-secondary hover:border-outline"}
+                ${isOnlyRead ? "cursor-not-allowed bg-surface-container-low" : "focus:ring-2 transition-all bg-white focus:ring-secondary hover:border-outline"}
             `}
             value={value}
             onChange={(e) => setValue(e.target.value)}

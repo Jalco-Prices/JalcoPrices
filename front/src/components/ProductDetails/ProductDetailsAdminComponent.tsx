@@ -31,10 +31,12 @@ function formatUpdatedAt(date: string): string {
     const dateObj = new Date(date)
     const now = new Date()
     const diffMs = now.getTime() - dateObj.getTime()
+    const diffSeconds = Math.floor(diffMs / 1000)
     const diffMinutes = Math.floor(diffMs / (1000 * 60))
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
 
-    if (diffMinutes < 1)   return "Ahora"
+    if (diffSeconds < 1)   return "Ahora"
+    if (diffSeconds < 60)  return `Hace ${diffSeconds} ${diffSeconds == 1 ? "segundo" : "segundos"}`
     if (diffMinutes < 60)  return `Hace ${diffMinutes} ${diffMinutes == 1 ? "minuto" : "minutos"}`
     if (diffHours < 24)    return `Hace ${diffHours} ${diffHours == 1 ? "hora" : "horas"}`
 
@@ -57,6 +59,7 @@ export default function ProductDetailsAdminComponent(
     const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true)
     const [isMounted, setIsMounted] = useState(false)
 
+    // Function to update product
     const handleUpdateProduct = async () => {
         setIsUpdateButtonDisabled(true)
 
@@ -80,17 +83,59 @@ export default function ProductDetailsAdminComponent(
         setLocalProduct(updatedProductData)
     }
 
+    const modifyProductProfitMargin = (wholesalePrice: number, priceWithVat: number) => {
+        const productProfitMarginField = 'porcentajeUtilidadReal' as keyof ProductType
+        let productProfitMarginValue = 0
+        if (wholesalePrice > 0 && priceWithVat > 0) {
+            const tempStringValue = ((wholesalePrice / priceWithVat) * 100).toFixed(2)
+            productProfitMarginValue = Number(tempStringValue)
+        }
+        setLocalProduct(prev => ({ ...prev, [productProfitMarginField]: productProfitMarginValue }))
+    }
+
+    // Input change handler
     const setField = <K extends keyof ProductType>(field: K, value: ProductType[K]) => {
         setLocalProduct(prev => ({ ...prev, [field]: value }))
+
+        if (field === 'precioMayoreo') {
+            // Retail Price Modification
+            const retailPriceField = 'precioMenudeo' as keyof ProductType
+            const retailPriceValue = (value as number * 2).toFixed(2)
+            setLocalProduct(prev => ({ ...prev, [retailPriceField]: retailPriceValue }))
+            // Product Profit Margin Modification
+            modifyProductProfitMargin(value as number, localProduct.precioConIva)
+        }
+
+        if (field === 'precioMenudeo') {
+            // Wholesale Price Modification
+            const wholesalePriceField = 'precioMayoreo' as keyof ProductType
+            const wholesalePriceValue = (value as number / 2).toFixed(2)
+            setLocalProduct(prev => ({ ...prev, [wholesalePriceField]: wholesalePriceValue }))
+        }
+
+        if (field === 'precioTienda') {
+            // Price with VAT Modification
+            const priceWithVatField = 'precioConIva' as keyof ProductType
+            const priceWithVatValue = ((value as number) * 1.16).toFixed(2)
+            setLocalProduct(prev => ({ ...prev, [priceWithVatField]: priceWithVatValue }))
+            // Policy Price Modification
+            const productPolicyPriceField = 'precioPolitica' as keyof ProductType
+            const productPolicyPriceValue = (Number(priceWithVatValue) * 1.4).toFixed(2)
+            setLocalProduct(prev => ({ ...prev, [productPolicyPriceField]: productPolicyPriceValue }))
+            // Product Profit Margin Modification
+            modifyProductProfitMargin(localProduct.precioMayoreo, Number(priceWithVatValue))
+        }
     }
     
+    // Memoized value to check if there are changes between localProduct and the original product
     const hasChanges = useMemo(() => {
         const textFields: (keyof ProductType)[] = [
             'nombre', 'categoria', 'nombreGenerico', 'codigoDeBarras', 'proveedor'
         ]
         const numberFields: (keyof ProductType)[] = [
             'precioMenudeo', 'precioMayoreo', 'precioTienda',
-            'minimoMayoreo', 'precioPolitica'
+            'precioConIva', 'precioPolitica', 'minimoMayoreo',
+            'porcentajeUtilidadReal'
         ]
 
         const textChanged = textFields.some(field => localProduct[field] !== product[field])
@@ -104,6 +149,7 @@ export default function ProductDetailsAdminComponent(
         setIsUpdateButtonDisabled(!hasChanges)
     }, [hasChanges])
 
+    // Set isMounted
     useEffect(() => { setIsMounted(true) }, [])
 
     return (
@@ -246,11 +292,11 @@ export default function ProductDetailsAdminComponent(
                                 symbol="$" isNumber={true} isOnlyRead={true}
                             />
                             <ProductDetailsInput
-                                id="product-profit-margin"
-                                label="Porcentaje Utilidad"
-                                value={localProduct.porcentajeUtilidadReal}
-                                setValue={(v) => setField('porcentajeUtilidadReal', v as number)}
-                                symbol="%" isNumber={true} isOnlyRead={true}
+                                id="product-policy-price"
+                                label="Precio Política"
+                                value={localProduct.precioPolitica}
+                                setValue={(v) => setField('precioPolitica', v as number)}
+                                symbol="$" isNumber={true} isOnlyRead={true}
                             />
                             <ProductDetailsInput
                                 id="product-minimum-wholesale"
@@ -269,11 +315,11 @@ export default function ProductDetailsAdminComponent(
                                 setValue={(v) => setField('proveedor', v as string)}
                             />
                             <ProductDetailsInput
-                                id="product-policy-price"
-                                label="Precio Política"
-                                value={localProduct.precioPolitica}
-                                setValue={(v) => setField('precioPolitica', v as number)}
-                                symbol="$" isNumber={true}
+                                id="product-profit-margin"
+                                label="Porcentaje Utilidad"
+                                value={localProduct.porcentajeUtilidadReal}
+                                setValue={(v) => setField('porcentajeUtilidadReal', v as number)}
+                                symbol="%" isNumber={true} isOnlyRead={true}
                             />
                         </div>
                     </section>
