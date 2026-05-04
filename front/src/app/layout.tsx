@@ -57,9 +57,18 @@ export default async function RootLayout({
     <html lang="es">
       <ClerkProvider>
       <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}>
-        <ProductsProvider products={products} error={error}>
+        <ProductsProvider products={products}>
           <NavbarComponent />
-          {children}
+          {error
+            ? // Error State
+              <section>
+                <p className="error-text">
+                    {error}
+                </p>
+              </section>
+            : // Normal State
+              children
+          }
         </ProductsProvider>
       </body>
       </ClerkProvider>

@@ -25,7 +25,7 @@ const orderOptions = [
 ]
 
 export default function CatalogComponent() {
-    const { products, error } = useProducts()
+    const { products } = useProducts()
     const [isShowingFilters, setIsShowingFilters] = useState(false)
     const [isShowingOrderOptions, setIsShowingOrderOptions] = useState(false)
     const [selectedFilter, setSelectedFilter] = useState<string | null>(null)
@@ -59,16 +59,6 @@ export default function CatalogComponent() {
                 block: "end",
             })
         })
-    }
-
-    if (error) {
-        return (
-            <section className="section-container">
-                <p className="error-text">
-                    {error}
-                </p>
-            </section>
-        )
     }
 
     return (

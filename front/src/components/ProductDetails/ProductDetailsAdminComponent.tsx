@@ -4,8 +4,6 @@
 // Components
 import ReturnButtonComponent from "../Buttons/ReturnButtonComponent"
 import ProductDetailsInput from "../Inputs/ProductDetailsInput"
-// Controllers
-import { updateProduct } from "@/controllers/Global/ProductsController"
 // Models
 import { ProductType } from "@/models/ProductModel"
 // Icons
@@ -48,9 +46,9 @@ function formatUpdatedAt(date: string): string {
 }
 
 export default function ProductDetailsAdminComponent(
-    { product }
+    { product, editProduct }
     :
-    { readonly product: ProductType }
+    { readonly product: ProductType, readonly editProduct: (token: string, updatedData: ProductType) => Promise<{ success: boolean, error: string | null }> }
 ) {
     const { getToken } = useAuth()
 
@@ -74,15 +72,16 @@ export default function ProductDetailsAdminComponent(
             updatedAt: new Date().toISOString(),
         }
 
-        const result = await updateProduct(token, updatedProductData)
-        if (result.error) {
+        const result = await editProduct(token, updatedProductData)
+        if (!result.success) {
             setIsUpdateButtonDisabled(false)
             return
         }
-
+        
         setLocalProduct(updatedProductData)
     }
 
+    // Function to modify Product Profit Margin
     const modifyProductProfitMargin = (wholesalePrice: number, priceWithVat: number) => {
         const productProfitMarginField = 'porcentajeUtilidadReal' as keyof ProductType
         let productProfitMarginValue = 0
