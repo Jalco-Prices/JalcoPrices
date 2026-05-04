@@ -11,7 +11,9 @@ import { BarcodeIcon, InfoCircleIcon, CashIcon } from "@/icons/Icons"
 // Images
 import ImageNotFound from "@/assets/images/ImageNotFound.png"
 // Utils
+
 import Image from "next/image"
+import { toast } from 'sonner'
 import { useAuth } from "@clerk/nextjs"
 import { useState, useEffect, useMemo } from "react"
 
@@ -60,10 +62,12 @@ export default function ProductDetailsAdminComponent(
     // Function to update product
     const handleUpdateProduct = async () => {
         setIsUpdateButtonDisabled(true)
+        const toastId = toast.loading("Actualizando producto...")
 
         const token = await getToken()
         if (!token) {
             setIsUpdateButtonDisabled(false)
+            toast.error("No se pudo obtener el token de autenticación", { id: toastId })
             return
         }
 
@@ -75,10 +79,12 @@ export default function ProductDetailsAdminComponent(
         const result = await editProduct(token, updatedProductData)
         if (!result.success) {
             setIsUpdateButtonDisabled(false)
+            toast.error(result.error || "Error al actualizar el producto", { id: toastId })
             return
         }
         
         setLocalProduct(updatedProductData)
+        toast.success("Producto actualizado correctamente", { id: toastId })
     }
 
     // Function to modify Product Profit Margin
