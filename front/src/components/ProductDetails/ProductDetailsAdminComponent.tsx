@@ -15,7 +15,7 @@ import ImageNotFound from "@/assets/images/ImageNotFound.png"
 import Image from "next/image"
 import { toast } from 'sonner'
 import { useAuth } from "@clerk/nextjs"
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useRef } from "react"
 
 
 function formatCreatedAt(date: string): string {
@@ -57,7 +57,9 @@ export default function ProductDetailsAdminComponent(
     const [localProduct, setLocalProduct] = useState<ProductType>({ ...product })
     const [isDeleteButtonDisabled, setIsDeleteButtonDisabled] = useState(false)
     const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true)
+    const [productUpdatedAt, setProductUpdatedAt] = useState(product.updatedAt)
     const [isMounted, setIsMounted] = useState(false)
+    const updatedAtRef = useRef(product.updatedAt)
 
     // Function to update product
     const handleUpdateProduct = async () => {
@@ -71,9 +73,11 @@ export default function ProductDetailsAdminComponent(
             return
         }
 
+        const currentDate = new Date().toISOString()
+
         const updatedProductData: ProductType = {
             ...localProduct,
-            updatedAt: new Date().toISOString(),
+            updatedAt: currentDate,
         }
 
         const result = await editProduct(token, updatedProductData)
@@ -165,8 +169,19 @@ export default function ProductDetailsAdminComponent(
         }
     }, [localProduct.precioMayoreo, localProduct.precioTienda])
 
-    // Set isMounted
-    useEffect(() => { setIsMounted(true) }, [])
+    // Update updatedAtRef whenever localProduct.updatedAt changes
+    useEffect(() => {
+        updatedAtRef.current = localProduct.updatedAt
+    }, [localProduct.updatedAt])
+
+    // Refresh productUpdatedAt every second
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIsMounted(true)
+            setProductUpdatedAt(formatUpdatedAt(updatedAtRef.current))
+        }, 1000)
+        return () => clearInterval(interval)
+    }, [])
 
     return (
         <section className="section-container">
@@ -227,7 +242,7 @@ export default function ProductDetailsAdminComponent(
                             <div className="flex justify-between items-center pt-sm font-inter">
                                 <span className="text-on-surface-variant">Modificado</span>
                                 <span className="text-on-surface">
-                                    {isMounted ? formatUpdatedAt(localProduct.updatedAt) : formatUpdatedAt(product.updatedAt)}
+                                    {isMounted ? productUpdatedAt : formatUpdatedAt(localProduct.updatedAt)}
                                 </span>
                             </div>
                         </div>
