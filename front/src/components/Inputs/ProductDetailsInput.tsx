@@ -26,15 +26,15 @@ function InputComponent(
 
 
 export default function ProductDetailsInput(
-    { id, label, value, setValue, symbol=undefined, isNumber=false, isOnlyRead=false }
+    { id, label, value, setValue, symbol=undefined, isNumber=false, isOnlyRead=false, wasChanged=false }
     :
     {
         readonly id: string, readonly label: string, readonly value: string | number, readonly setValue: (newValue: string | number) => void, readonly symbol?: string,
-        readonly isNumber?: boolean, readonly isOnlyRead?: boolean
+        readonly isNumber?: boolean, readonly isOnlyRead?: boolean, readonly wasChanged?: boolean
     }
 ) {
     return (
-        <section className="flex flex-col gap-xs">
+        <section className={`relative flex flex-col gap-xs ${wasChanged ? 'changed-indicator' : ''}`}>
             <label
                 htmlFor={id}
                 className="font-inter text-label-caps uppercase text-on-surface-variant"

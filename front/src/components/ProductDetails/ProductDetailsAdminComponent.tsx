@@ -249,24 +249,28 @@ export default function ProductDetailsAdminComponent(
                                 label="Nombre"
                                 value={localProduct.nombre}
                                 setValue={(v) => setField('nombre', v as string)}
+                                wasChanged={localProduct.nombre !== product.nombre}
                             />
                             <ProductDetailsInput
                                 id="product-category"
                                 label="Categoría"
                                 value={localProduct.categoria}
                                 setValue={(v) => setField('categoria', v as string)}
+                                wasChanged={localProduct.categoria !== product.categoria}
                             />
                             <ProductDetailsInput
                                 id="product-generic-name"
                                 label="Rosca"
                                 value={localProduct.nombreGenerico}
                                 setValue={(v) => setField('nombreGenerico', v as string)}
+                                wasChanged={localProduct.nombreGenerico !== product.nombreGenerico}
                             />
                             <ProductDetailsInput
                                 id="product-barcode"
                                 label="Código de Barras"
                                 value={localProduct.codigoDeBarras}
                                 setValue={(v) => setField('codigoDeBarras', v as string)}
+                                wasChanged={localProduct.codigoDeBarras !== product.codigoDeBarras}
                             />
                         </div>
                     </section>
@@ -285,6 +289,7 @@ export default function ProductDetailsAdminComponent(
                                 value={localProduct.precioMenudeo}
                                 setValue={(v) => setField('precioMenudeo', v as number)}
                                 symbol="$" isNumber={true}
+                                wasChanged={Number(localProduct.precioMenudeo) !== Number(product.precioMenudeo)}
                             />
                             <ProductDetailsInput
                                 id="product-wholesale-price"
@@ -292,6 +297,7 @@ export default function ProductDetailsAdminComponent(
                                 value={localProduct.precioMayoreo}
                                 setValue={(v) => setField('precioMayoreo', v as number)}
                                 symbol="$" isNumber={true}
+                                wasChanged={Number(localProduct.precioMayoreo) !== Number(product.precioMayoreo)}
                             />
                             <ProductDetailsInput
                                 id="product-store-price"
@@ -299,6 +305,7 @@ export default function ProductDetailsAdminComponent(
                                 value={localProduct.precioTienda}
                                 setValue={(v) => setField('precioTienda', v as number)}
                                 symbol="$" isNumber={true}
+                                wasChanged={Number(localProduct.precioTienda) !== Number(product.precioTienda)}
                             />
                             <ProductDetailsInput
                                 id="product-price-with-vat"
@@ -306,6 +313,7 @@ export default function ProductDetailsAdminComponent(
                                 value={localProduct.precioConIva}
                                 setValue={(v) => setField('precioConIva', v as number)}
                                 symbol="$" isNumber={true} isOnlyRead={true}
+                                wasChanged={Number(localProduct.precioConIva) !== Number(product.precioConIva)}
                             />
                             <ProductDetailsInput
                                 id="product-policy-price"
@@ -313,6 +321,7 @@ export default function ProductDetailsAdminComponent(
                                 value={localProduct.precioPolitica}
                                 setValue={(v) => setField('precioPolitica', v as number)}
                                 symbol="$" isNumber={true} isOnlyRead={true}
+                                wasChanged={Number(localProduct.precioPolitica) !== Number(product.precioPolitica)}
                             />
                             <ProductDetailsInput
                                 id="product-minimum-wholesale"
@@ -321,6 +330,7 @@ export default function ProductDetailsAdminComponent(
                                 setValue={(v) => setField('minimoMayoreo', v as number)}
                                 symbol={Number(localProduct.minimoMayoreo) === 1 ? "ud." : "uds."}
                                 isNumber={true}
+                                wasChanged={Number(localProduct.minimoMayoreo) !== Number(product.minimoMayoreo)}
                             />
                         </div>
                         <div className="mt-lg pt-lg border-t border-outline-variant grid grid-cols-1 md:grid-cols-2 gap-lg">
@@ -329,6 +339,7 @@ export default function ProductDetailsAdminComponent(
                                 label="Proveedor"
                                 value={localProduct.proveedor}
                                 setValue={(v) => setField('proveedor', v as string)}
+                                wasChanged={localProduct.proveedor !== product.proveedor}
                             />
                             <ProductDetailsInput
                                 id="product-profit-margin"
@@ -336,6 +347,7 @@ export default function ProductDetailsAdminComponent(
                                 value={localProduct.porcentajeUtilidadReal}
                                 setValue={(v) => setField('porcentajeUtilidadReal', v as number)}
                                 symbol="%" isNumber={true} isOnlyRead={true}
+                                wasChanged={Number(localProduct.porcentajeUtilidadReal) !== Number(product.porcentajeUtilidadReal)}
                             />
                         </div>
                     </section>
