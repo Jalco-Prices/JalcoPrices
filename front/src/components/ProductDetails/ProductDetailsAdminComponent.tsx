@@ -154,6 +154,17 @@ export default function ProductDetailsAdminComponent(
         setIsUpdateButtonDisabled(!hasChanges)
     }, [hasChanges])
 
+    // Check if wholesale price is lower than store price for Warning
+    useEffect(() => {
+        if (localProduct.precioMayoreo && localProduct.precioTienda) {
+            const wholesalePrice = Number(localProduct.precioMayoreo)
+            const storePrice = Number(localProduct.precioTienda)
+            if (wholesalePrice < storePrice) {
+                toast.warning("Mayoreo es menor que el precio de tienda. Verifica los precios ingresados.")
+            }
+        }
+    }, [localProduct.precioMayoreo, localProduct.precioTienda])
+
     // Set isMounted
     useEffect(() => { setIsMounted(true) }, [])
 
