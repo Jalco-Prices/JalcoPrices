@@ -14,7 +14,7 @@ export default function ProductDetailsBrainComponent(
     :
     { readonly id: string }
 ) {
-    const { products, editProduct } = useProducts()
+    const { products, editProduct, deleteProduct } = useProducts()
 
     const product = products.find((p: AnyProductType) => p._id === id)
 
@@ -32,6 +32,7 @@ export default function ProductDetailsBrainComponent(
                 <ProductDetailsAdminComponent
                     product={product}
                     editProduct={editProduct}
+                    deleteProduct={deleteProduct}
                 />
             
             :   // User View

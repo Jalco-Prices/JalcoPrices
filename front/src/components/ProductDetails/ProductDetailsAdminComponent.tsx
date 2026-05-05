@@ -11,10 +11,10 @@ import { BarcodeIcon, InfoCircleIcon, CashIcon } from "@/icons/Icons"
 // Images
 import ImageNotFound from "@/assets/images/ImageNotFound.png"
 // Utils
-
 import Image from "next/image"
 import { toast } from 'sonner'
 import { useAuth } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
 import { useState, useEffect, useMemo, useRef } from "react"
 
 
@@ -48,11 +48,12 @@ function formatUpdatedAt(date: string): string {
 }
 
 export default function ProductDetailsAdminComponent(
-    { product, editProduct }
+    { product, editProduct, deleteProduct }
     :
-    { readonly product: ProductType, readonly editProduct: (token: string, updatedData: ProductType) => Promise<{ success: boolean, error: string | null }> }
+    { readonly product: ProductType, readonly editProduct: (token: string, updatedData: ProductType) => Promise<{ success: boolean, error: string | null }>, readonly deleteProduct: (token: string, id: string) => Promise<{ success: boolean, error: string | null }> }
 ) {
     const { getToken } = useAuth()
+    const router = useRouter()
 
     const [localProduct, setLocalProduct] = useState<ProductType>({ ...product })
     const [isDeleteButtonDisabled, setIsDeleteButtonDisabled] = useState(false)
@@ -60,6 +61,35 @@ export default function ProductDetailsAdminComponent(
     const [productUpdatedAt, setProductUpdatedAt] = useState(product.updatedAt)
     const [isMounted, setIsMounted] = useState(false)
     const updatedAtRef = useRef(product.updatedAt)
+
+    // Function to delete product
+    const handleDeleteProduct = async () => {
+        setIsDeleteButtonDisabled(true)
+        const toastId = toast.loading("Eliminando producto...")
+
+        const token = await getToken()
+        if (!token) {
+            setIsDeleteButtonDisabled(false)
+            toast.error("No se pudo obtener el token de autenticación", { id: toastId })
+            return
+        }
+
+        const result = await deleteProduct(token, product._id)
+        if (!result.success) {
+            setIsDeleteButtonDisabled(false)
+            toast.error(result.error || "Error al eliminar el producto", { id: toastId })
+            return
+        }
+
+        toast.success("Producto eliminado correctamente", { id: toastId })
+        setIsDeleteButtonDisabled(false)
+
+        if (globalThis.history.length > 1) {
+            router.back()
+        } else {
+            router.push("/")
+        }
+    }
 
     // Function to update product
     const handleUpdateProduct = async () => {
@@ -192,6 +222,7 @@ export default function ProductDetailsAdminComponent(
                     <button
                         disabled={isDeleteButtonDisabled}
                         className="px-lg py-sm shadow-sm border rounded-lg font-inter cursor-pointer transition-all active:scale-95 text-error border-error hover:bg-error-container disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 disabled:text-white disabled:border-primary disabled:bg-primary"
+                        onClick={handleDeleteProduct}
                     >
                         Eliminar
                     </button>

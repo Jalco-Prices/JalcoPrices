@@ -4,7 +4,7 @@ import "./globals.css";
 import { ProductsProvider } from "@/context/ProductsContext";
 import NavbarComponent from "@/components/Navbar/NavbarComponent";
 // Controllers
-import { getAllProducts } from "@/controllers/Global/ProductsController";
+import { getAllProductsController } from "@/controllers/Global/ProductsController";
 // Models
 import { AnyProductType } from "@/models/ProductModel";
 // Utils
@@ -47,7 +47,7 @@ export default async function RootLayout({
   let error: string | null = null
 
   if (token) {
-    const result = await getAllProducts(token)
+    const result = await getAllProductsController(token)
     if (result.error) {
         error = result.error
     } else {

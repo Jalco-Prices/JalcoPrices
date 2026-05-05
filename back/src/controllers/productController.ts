@@ -49,3 +49,33 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
         res.status(500).json({ error: 'Error actualizando producto' })
     }
 }
+
+export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const isAdmin = (req as any).user?.isAdmin
+
+        if (!isAdmin) {
+            res.status(403).json({ error: 'Usuario sin permisos' })
+            return
+        }
+
+        const { id: _id } = req.body
+
+        if (!_id) {
+            res.status(400).json({ error: 'ID del producto es requerido' })
+            return
+        }
+
+        const deletedProduct = await Product.findByIdAndDelete(_id)
+
+        if (!deletedProduct) {
+            res.status(404).json({ error: 'Producto no encontrado' })
+            return
+        }
+
+        res.status(200).json({ message: 'Producto eliminado correctamente' })
+    } catch (error) {
+        console.error('Error eliminando producto:', error)
+        res.status(500).json({ error: 'Error eliminando producto' })
+    }
+}
