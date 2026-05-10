@@ -206,6 +206,15 @@ export default function ProductFormComponent(
                                 setValue={(v) => setField('codigoDeBarras', v as string)}
                                 wasChanged={product && localProduct.codigoDeBarras !== product.codigoDeBarras}
                             />
+                            <div className="md:col-span-2">
+                                <ProductDetailsInput
+                                    id="product-image"
+                                    label="Imagen"
+                                    value={localProduct.imagen}
+                                    setValue={(v) => setField('imagen', v as string)}
+                                    wasChanged={product && localProduct.imagen !== product.imagen}
+                                />
+                            </div>
                         </div>
                     </section>
 
