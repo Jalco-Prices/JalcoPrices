@@ -4,6 +4,7 @@
 // Components
 import ReturnButtonComponent from "../Buttons/ReturnButtonComponent"
 import ProductFormComponent from "../Global/ProductFormComponent"
+import SecondaryActionButtonComponent from "../Buttons/SecondaryActionButtonComponent"
 // Models
 import { ProductType } from "@/models/ProductModel"
 // Utils
@@ -177,14 +178,12 @@ export default function ProductDetailsAdminComponent(
                     >
                         Eliminar
                     </button>
-                    <button
-                        id="update-button"
-                        disabled={isUpdateButtonDisabled}
-                        className="px-lg py-sm shadow-sm border rounded-lg font-inter cursor-pointer transition-all active:scale-95 text-secondary border-secondary bg-white hover:bg-primary-fixed disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 disabled:text-white disabled:border-primary disabled:bg-primary"
-                        onClick={handleUpdateProduct}
-                    >
-                        Actualizar
-                    </button>
+                    <SecondaryActionButtonComponent
+                        idName="update-button"
+                        label="Actualizar"
+                        isDisabled={isUpdateButtonDisabled}
+                        handleClick={handleUpdateProduct}
+                    />
                 </div>
             </div>
 

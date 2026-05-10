@@ -2,7 +2,7 @@
 
 
 export type ProductType = {
-    _id: string
+    _id?: string
     nombre: string
     nombreGenerico: string
     categoria: string
@@ -16,9 +16,9 @@ export type ProductType = {
     minimoMayoreo: number
     codigoDeBarras: string
     imagen: string
-    vecesVisto: number
-    createdAt: string
-    updatedAt: string
+    vecesVisto?: number
+    createdAt?: string
+    updatedAt?: string
 }
 
 export type ProductPublicType = Pick<ProductType,

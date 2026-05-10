@@ -132,6 +132,7 @@ export default function ProductFormComponent(
                                 value={localProduct.nombre}
                                 setValue={(v) => setField('nombre', v as string)}
                                 wasChanged={product && localProduct.nombre !== product.nombre}
+                                isRequired={type === "create"}
                             />
                             <ProductDetailsInput
                                 id="product-category"
@@ -139,6 +140,7 @@ export default function ProductFormComponent(
                                 value={localProduct.categoria}
                                 setValue={(v) => setField('categoria', v as string)}
                                 wasChanged={product && localProduct.categoria !== product.categoria}
+                                isRequired={type === "create"}
                             />
                             <ProductDetailsInput
                                 id="product-generic-name"
@@ -146,6 +148,7 @@ export default function ProductFormComponent(
                                 value={localProduct.nombreGenerico}
                                 setValue={(v) => setField('nombreGenerico', v as string)}
                                 wasChanged={product && localProduct.nombreGenerico !== product.nombreGenerico}
+                                isRequired={type === "create"}
                             />
                             <ProductDetailsInput
                                 id="product-barcode"

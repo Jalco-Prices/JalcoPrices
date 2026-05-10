@@ -20,6 +20,25 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
     }
 }
 
+export const addProduct = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const isAdmin = (req as any).user?.isAdmin
+
+        if (!isAdmin) {
+            res.status(403).json({ error: 'Usuario sin permisos' })
+            return
+        }
+
+        const newProduct = new Product(req.body)
+        await newProduct.save()
+
+        res.status(201).json({ message: 'Producto agregado correctamente' })
+    } catch (error) {
+        console.error('Error agregando producto:', error)
+        res.status(500).json({ error: 'Error agregando producto' })
+    }
+}
+
 export const updateProduct = async (req: Request, res: Response): Promise<void> => {
     try {
         const isAdmin = (req as any).user?.isAdmin
