@@ -1,13 +1,16 @@
 import "./globals.css";
 
 // Components
-import { ProductsProvider } from "@/context/ProductsContext";
 import NavbarComponent from "@/components/Navbar/NavbarComponent";
 import ErrorComponent from "@/components/Global/ErrorComponent";
 // Controllers
+import { getUserIsAdminController } from "@/controllers/Global/UserController"
 import { getAllProductsController } from "@/controllers/Global/ProductsController";
 // Models
 import { AnyProductType } from "@/models/ProductModel";
+// Contexts
+import { UserProvider } from "@/context/UserContext";
+import { ProductsProvider } from "@/context/ProductsContext";
 // Utils
 import { Toaster } from 'sonner'
 import type { Metadata } from "next";
@@ -41,6 +44,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let isAdmin: boolean = false
   let products: AnyProductType[] = []
   let error: string | null = null
 
@@ -48,11 +52,18 @@ export default async function RootLayout({
   const token = await getToken()
 
   if (token) {
-    const result = await getAllProductsController(token)
-    if (result.error) {
-        error = result.error
+    const userResult = await getUserIsAdminController(token)
+    if (userResult.error) {
+        error = userResult.error
     } else {
-        products = result.products
+      isAdmin = userResult.isAdmin
+    }
+
+    const productsResult = await getAllProductsController(token)
+    if (productsResult.error) {
+        error = productsResult.error
+    } else {
+        products = productsResult.products
     }
   }
 
@@ -60,16 +71,20 @@ export default async function RootLayout({
     <html lang="es">
       <ClerkProvider>
       <body className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}>
+        <UserProvider isAdmin={isAdmin}>
         <ProductsProvider products={products}>
           <NavbarComponent />
           <Toaster richColors position="top-center" offset={{ top: 80 }} />
           {error
             ? // Error State
-              <ErrorComponent message={error} />
+              <main className="main-container">
+                <ErrorComponent message={error} />
+              </main>
             : // Normal State
               children
           }
         </ProductsProvider>
+        </UserProvider>
       </body>
       </ClerkProvider>
     </html>

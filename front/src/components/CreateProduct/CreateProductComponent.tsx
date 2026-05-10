@@ -1,9 +1,12 @@
 'use client'
 
 // Components
+import ErrorComponent from "@/components/Global/ErrorComponent"
 import ProductFormComponent from "../Global/ProductFormComponent"
 // Models
 import { ProductType } from "@/models/ProductModel"
+// Contexts
+import { useUser } from "@/context/UserContext"
 // Utils
 import { useState } from "react"
 
@@ -30,6 +33,14 @@ const emptyProduct: ProductType = {
 export default function CreateProductComponent() {
     const [localProduct, setLocalProduct] = useState<ProductType>(emptyProduct)
     const [isShowBarcode, setIsShowBarcode] = useState(false)
+
+    const { isAdmin } = useUser()
+
+    if (!isAdmin) {
+        return (
+            <ErrorComponent message="No tienes permiso para acceder a esta página" />
+        )
+    }
 
     return (
         <section className="section-container">
