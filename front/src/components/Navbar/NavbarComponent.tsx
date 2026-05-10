@@ -3,11 +3,13 @@
 import "@/styles/Global/NavbarStyle.css";
 
 // Components
-import { SearchIcon } from "@/icons/Icons";
+import NavbarSearchInputComponent from "./NavbarSearchInputComponent";
 // Texts
 import { menuContentNavLinks } from "@/texts/Navbar";
 // Context
 import { useUser as useUserLocal } from "@/context/UserContext";
+// Icons
+import { SearchIcon } from "@/icons/Icons";
 // Utils
 import { useUser, UserButton } from '@clerk/nextjs'
 import { useRouter, usePathname } from "next/navigation";
@@ -72,33 +74,12 @@ export default function NavbarComponent() {
             }
 
             {/* Search Input Container */}
-            <div className={`search-input-container ${isSearchOpen ? 'open' : ''}`}>
-                <div className="search-input-wrapper">
-                    {/* Search Icon */}
-                    <div className="search-input-icon">
-                        <SearchIcon
-                            size={"fill"}
-                            color="#76777D"
-                        />
-                    </div>
-
-                    {/* Search Input */}
-                    <input
-                        id="search-input-id"
-                        type="text"
-                        className="search-input"
-                        placeholder="Buscar productos..."
-                        autoFocus={true}
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Escape") {
-                                setIsSearchOpen(false);
-                            }
-                        }}
-                    />
-                </div>
-            </div>
+            <NavbarSearchInputComponent
+                value={searchText}
+                isSearchOpen={isSearchOpen}
+                setSearchText={setSearchText}
+                setIsSearchOpen={setIsSearchOpen}
+            />
 
             {/* Menu Content Container */}
             <div className={`menu-content-container ${isMenuOpen ? 'open' : ''}`}>

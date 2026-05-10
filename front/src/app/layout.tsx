@@ -44,6 +44,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // ------  Data Fetching Start  ------
   let isAdmin: boolean = false
   let products: AnyProductType[] = []
   let error: string | null = null
@@ -66,6 +67,7 @@ export default async function RootLayout({
         products = productsResult.products
     }
   }
+  // ------  Data Fetching End  ------
 
   return (
     <html lang="es">

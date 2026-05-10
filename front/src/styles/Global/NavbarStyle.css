@@ -38,7 +38,7 @@
 }
 
 .search-input-container.open {
-    @apply block;
+    @apply flex flex-col gap-3;
 }
 
 .search-input-wrapper {
@@ -52,6 +52,26 @@
 
 .search-input {
     @apply w-full h-full outline-0;
+}
+
+.search-results-wrapper {
+    transition: max-height 0.2s ease;
+    @apply overflow-hidden max-h-0 rounded-md border-0
+    border-outline-variant bg-white;
+}
+
+.search-results-wrapper.open {
+    @apply border max-h-105;
+}
+
+.search-results-container {
+    @apply overflow-x-hidden overflow-y-auto w-full max-h-105 flex flex-col gap-4 p-4;
+}
+
+.search-result-item {
+    @apply p-2 cursor-pointer transition-colors duration-200
+    text-start border rounded-md
+    border-outline-variant hover:border-black;
 }
 
 
