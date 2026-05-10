@@ -8,40 +8,11 @@ import SecondaryActionButtonComponent from "../Buttons/SecondaryActionButtonComp
 // Models
 import { ProductType } from "@/models/ProductModel"
 // Utils
-import { useState, useEffect, useMemo, useRef } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@clerk/nextjs"
 import { toast } from 'sonner'
 
-
-function formatCreatedAt(date: string): string {
-    const dateObj = new Date(date)
-    return dateObj.toLocaleDateString("es-MX", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-    })
-}
-
-function formatUpdatedAt(date: string): string {
-    const dateObj = new Date(date)
-    const now = new Date()
-    const diffMs = now.getTime() - dateObj.getTime()
-    const diffSeconds = Math.floor(diffMs / 1000)
-    const diffMinutes = Math.floor(diffMs / (1000 * 60))
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
-
-    if (diffSeconds < 1)   return "Ahora"
-    if (diffSeconds < 60)  return `Hace ${diffSeconds} ${diffSeconds == 1 ? "segundo" : "segundos"}`
-    if (diffMinutes < 60)  return `Hace ${diffMinutes} ${diffMinutes == 1 ? "minuto" : "minutos"}`
-    if (diffHours < 24)    return `Hace ${diffHours} ${diffHours == 1 ? "hora" : "horas"}`
-
-    return dateObj.toLocaleDateString("es-MX", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-    })
-}
 
 export default function ProductDetailsAdminComponent(
     { product, editProduct, deleteProduct }
@@ -55,9 +26,6 @@ export default function ProductDetailsAdminComponent(
     const [isDeleteButtonDisabled, setIsDeleteButtonDisabled] = useState(false)
     const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true)
     const [isShowBarcode, setIsShowBarcode] = useState(false)
-    const [productUpdatedAt, setProductUpdatedAt] = useState(product.updatedAt)
-    const [isMounted, setIsMounted] = useState(false)
-    const updatedAtRef = useRef(product.updatedAt)
 
     // Function to delete product
     const handleDeleteProduct = async () => {
@@ -68,6 +36,12 @@ export default function ProductDetailsAdminComponent(
         if (!token) {
             setIsDeleteButtonDisabled(false)
             toast.error("No se pudo obtener el token de autenticación", { id: toastId })
+            return
+        }
+
+        if (!product._id) {
+            setIsDeleteButtonDisabled(false)
+            toast.error("ID del producto no encontrado", { id: toastId })
             return
         }
 
@@ -151,20 +125,6 @@ export default function ProductDetailsAdminComponent(
         }
     }, [localProduct.precioMayoreo, localProduct.precioTienda])
 
-    // Update updatedAtRef whenever localProduct.updatedAt changes
-    useEffect(() => {
-        updatedAtRef.current = localProduct.updatedAt
-    }, [localProduct.updatedAt])
-
-    // Refresh productUpdatedAt every second
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setIsMounted(true)
-            setProductUpdatedAt(formatUpdatedAt(updatedAtRef.current))
-        }, 1000)
-        return () => clearInterval(interval)
-    }, [])
-
     return (
         <section className="section-container">
             {/* Top Buttons */}
@@ -198,10 +158,6 @@ export default function ProductDetailsAdminComponent(
                 isShowBarcode={isShowBarcode}
                 setLocalProduct={setLocalProduct}
                 setIsShowBarcode={setIsShowBarcode}
-                isMounted={isMounted}
-                productUpdatedAt={productUpdatedAt}
-                formatCreatedAt={formatCreatedAt}
-                formatUpdatedAt={formatUpdatedAt}
             />
         </section>
     )

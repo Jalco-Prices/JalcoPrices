@@ -1,5 +1,8 @@
+'use client';
+
 // Components
 import ProductDetailsInput from "../Inputs/ProductDetailsInput"
+import BarcodeModalComponent from "./BarcodeModalComponent";
 // Models
 import { ProductType } from "@/models/ProductModel"
 // Icons
@@ -7,22 +10,53 @@ import { BarcodeIcon, InfoCircleIcon, CashIcon } from "@/icons/Icons"
 // Images
 import ImageNotFound from "@/assets/images/ImageNotFound.png"
 // Utils
-import { Dispatch, SetStateAction } from "react"
-import Image from "next/image"
-import Barcode from 'react-barcode'
+import { useState, useEffect, useRef, Dispatch, SetStateAction } from "react"
+import Image from "next/image"  
 
 type typeOptions = "create" | "details"
 
+function formatCreatedAt(date: string): string {
+    const dateObj = new Date(date)
+    return dateObj.toLocaleDateString("es-MX", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    })
+}
+
+function formatUpdatedAt(date: string): string {
+    const dateObj = new Date(date)
+    const now = new Date()
+    const diffMs = now.getTime() - dateObj.getTime()
+    const diffSeconds = Math.floor(diffMs / 1000)
+    const diffMinutes = Math.floor(diffMs / (1000 * 60))
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+
+    if (diffSeconds < 1)   return "Ahora"
+    if (diffSeconds < 60)  return `Hace ${diffSeconds} ${diffSeconds == 1 ? "segundo" : "segundos"}`
+    if (diffMinutes < 60)  return `Hace ${diffMinutes} ${diffMinutes == 1 ? "minuto" : "minutos"}`
+    if (diffHours < 24)    return `Hace ${diffHours} ${diffHours == 1 ? "hora" : "horas"}`
+
+    return dateObj.toLocaleDateString("es-MX", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    })
+}
+
 
 export default function ProductFormComponent(
-    { type, product, localProduct, isShowBarcode, setLocalProduct, setIsShowBarcode, isMounted, productUpdatedAt, formatCreatedAt, formatUpdatedAt }
+    { type, product, localProduct, isShowBarcode, setLocalProduct, setIsShowBarcode }
     :
     {
         readonly type: typeOptions, readonly product?: ProductType, readonly localProduct: ProductType, readonly isShowBarcode: boolean,
-        readonly setLocalProduct: Dispatch<SetStateAction<ProductType>>, readonly setIsShowBarcode: (show: boolean) => void, readonly isMounted?: boolean,
-        readonly productUpdatedAt?: string, readonly formatCreatedAt?: (dateString: string) => string, readonly formatUpdatedAt?: (dateString: string) => string
+        readonly setLocalProduct: Dispatch<SetStateAction<ProductType>>, readonly setIsShowBarcode: (show: boolean) => void
     }
 ) {
+    const [productUpdatedAt, setProductUpdatedAt] = useState(product?.updatedAt)
+    const [isMounted, setIsMounted] = useState(false)
+
+    const updatedAtRef = useRef(product?.updatedAt)
 
     // Function to modify Product Profit Margin
     const modifyProductProfitMargin = (wholesalePrice: number, priceWithVat: number) => {
@@ -69,6 +103,21 @@ export default function ProductFormComponent(
         }
     }
 
+    // Refresh productUpdatedAt every second
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIsMounted(true)
+            const currentUpdatedAt = updatedAtRef.current ? formatUpdatedAt(updatedAtRef.current) : ""
+            setProductUpdatedAt(currentUpdatedAt)
+        }, 1000)
+        return () => clearInterval(interval)
+    }, [])
+
+    // Update updatedAtRef whenever localProduct.updatedAt changes
+    useEffect(() => {
+        updatedAtRef.current = localProduct.updatedAt
+    }, [localProduct.updatedAt])
+
     return (
         <>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-xl">
@@ -103,12 +152,12 @@ export default function ProductFormComponent(
                             <div className="space-y-sm">
                                 <div className="flex justify-between items-center py-sm font-inter border-b border-outline-variant/30">
                                     <span className="text-on-surface-variant">Creado</span>
-                                    <span className="text-on-surface">{formatCreatedAt?(localProduct.createdAt):""}</span>
+                                    <span className="text-on-surface">{localProduct.createdAt ? formatCreatedAt(localProduct.createdAt) : ""}</span>
                                 </div>
                                 <div className="flex justify-between items-center pt-sm font-inter">
                                     <span className="text-on-surface-variant">Modificado</span>
                                     <span className="text-on-surface">
-                                        {isMounted ? productUpdatedAt : formatUpdatedAt?(localProduct.updatedAt):""}
+                                        {isMounted ? productUpdatedAt : localProduct.updatedAt ? formatUpdatedAt(localProduct.updatedAt) : ""}
                                     </span>
                                 </div>
                             </div>
@@ -241,42 +290,11 @@ export default function ProductFormComponent(
 
             {/* Barcode Modal */}
             {isShowBarcode &&
-                <section className="z-100 fixed top-0 left-0 h-svh w-full flex items-center justify-center bg-transparent">
-                    <div className="z-102 relative max-w-130 p-lg w-full flex flex-col gap-lg rounded-xl shadow-2xl border bg-surface-container-lowest border-outline-variant">
-                        {/* Product Information */}
-                        <div className="w-full text-center font-inter">
-                            <h3 className="mb-xs text-primary">{localProduct.nombre}</h3>
-                            <p className="text-on-surface-variant">Código de Barras</p>
-                        </div>
-
-                        {/* Barcode Display */}
-                        <div className="w-full flex items-center justify-center p-lg rounded-lg border border-outline-variant bg-white">
-                            <Barcode
-                                value={localProduct.codigoDeBarras || "0000000000000"}
-                                format="CODE128"
-                                width={2}
-                                height={100}
-                                displayValue={false}
-                            />
-                        </div>
-
-                        {/* Barcode Value */}
-                        <h1 className="text-center font-tabular-nums text-h2 tracking-widest truncate text-primary">{localProduct.codigoDeBarras}</h1>
-
-                        {/* Close Button */}
-                        <button
-                            className="w-full py-sm rounded-lg font-medium shadow-sm cursor-pointer transition-all hover:opacity-90 active:scale-95 text-on-primary bg-primary"
-                            onClick={() => setIsShowBarcode(false)}
-                        >
-                            Close
-                        </button>
-                    </div>
-
-                    <button
-                        className="z-101 absolute top-0 left-0 w-full h-full backdrop-blur-sm bg-black/60"
-                        onClick={() => setIsShowBarcode(false)}
-                    />
-                </section>
+                <BarcodeModalComponent
+                    name={localProduct.nombre}
+                    barcode={localProduct.codigoDeBarras}
+                    setIsShowBarcode={setIsShowBarcode}
+                />
             }
         </>
     )
