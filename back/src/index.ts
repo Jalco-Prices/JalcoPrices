@@ -6,6 +6,7 @@ import connectDB from './db/connect'
 
 // Routes Imports
 import webhookRoutes from './routes/webhooks'
+import userRoutes from './routes/user'
 import productRoutes from './routes/products'
 
 // Config
@@ -25,6 +26,7 @@ app.use(express.json())
 
 // Routes
 app.use('/webhooks', webhookRoutes)
+app.use('/user', userRoutes)
 app.use('/products', productRoutes)
 
 // Start Server

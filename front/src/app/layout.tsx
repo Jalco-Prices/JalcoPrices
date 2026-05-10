@@ -3,6 +3,7 @@ import "./globals.css";
 // Components
 import { ProductsProvider } from "@/context/ProductsContext";
 import NavbarComponent from "@/components/Navbar/NavbarComponent";
+import ErrorComponent from "@/components/Global/ErrorComponent";
 // Controllers
 import { getAllProductsController } from "@/controllers/Global/ProductsController";
 // Models
@@ -40,11 +41,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { getToken } = await auth()
-  const token = await getToken()
-
   let products: AnyProductType[] = []
   let error: string | null = null
+
+  const { getToken } = await auth()
+  const token = await getToken()
 
   if (token) {
     const result = await getAllProductsController(token)
@@ -64,11 +65,7 @@ export default async function RootLayout({
           <Toaster richColors position="top-center" offset={{ top: 80 }} />
           {error
             ? // Error State
-              <section>
-                <p className="error-text">
-                    {error}
-                </p>
-              </section>
+              <ErrorComponent message={error} />
             : // Normal State
               children
           }

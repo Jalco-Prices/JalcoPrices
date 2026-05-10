@@ -7,8 +7,8 @@ export const menuContentNavLinks = [
         href: "/"
     },
     {
-        value: "history",
-        label: "Historial",
-        href: "/history"
+        value: "create-product",
+        label: "Crear producto",
+        href: "/create-product"
     }
 ]
