@@ -4,11 +4,13 @@ export const menuContentNavLinks = [
     {
         value: "catalog",
         label: "Catálogo",
-        href: "/"
+        href: "/",
+        justAdminView: false
     },
     {
         value: "create-product",
         label: "Crear producto",
-        href: "/create-product"
+        href: "/create-product",
+        justAdminView: true
     }
 ]

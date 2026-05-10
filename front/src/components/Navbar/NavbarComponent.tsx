@@ -6,6 +6,8 @@ import "@/styles/Global/NavbarStyle.css";
 import { SearchIcon } from "@/icons/Icons";
 // Texts
 import { menuContentNavLinks } from "@/texts/Navbar";
+// Context
+import { useUser as useUserLocal } from "@/context/UserContext";
 // Utils
 import { useUser, UserButton } from '@clerk/nextjs'
 import { useRouter, usePathname } from "next/navigation";
@@ -13,6 +15,7 @@ import { useState } from "react";
 
 
 export default function NavbarComponent() {
+    const { isAdmin } = useUserLocal();
     const { user } = useUser();
     const router = useRouter();
     const pathname = usePathname();
@@ -99,18 +102,21 @@ export default function NavbarComponent() {
 
             {/* Menu Content Container */}
             <div className={`menu-content-container ${isMenuOpen ? 'open' : ''}`}>
-                {menuContentNavLinks.map((link) => (
-                    <button
-                        key={link.value}
-                        className={`menu-content-nav-link ${pathname === link.href || pathname.startsWith(link.href + "/") ? 'selected' : ''}`}
-                        onClick={() => {
-                            setIsMenuOpen(false);
-                            router.push(link.href);
-                        }}
-                    >
-                        {link.label}
-                    </button>
-                ))}
+                {menuContentNavLinks
+                    .filter(link => !link.justAdminView || (link.justAdminView && isAdmin))
+                    .map((link) => (
+                        <button
+                            key={link.value}
+                            className={`menu-content-nav-link ${pathname === link.href || pathname.startsWith(link.href + "/") ? 'selected' : ''}`}
+                            onClick={() => {
+                                setIsMenuOpen(false);
+                                router.push(link.href);
+                            }}
+                        >
+                            {link.label}
+                        </button>
+                    ))
+                }
             </div>
 
             {/* Disable Overlay */}
