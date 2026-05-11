@@ -11,5 +11,6 @@ export type UserType = {
 }
 
 export type UserToManageType = UserType & {
-    fullName: string
+    fullName: string,
+    imageUrl: string
 }

@@ -1,13 +1,16 @@
 'use client';
 
-// Components
-import ErrorComponent from "../Global/ErrorComponent";
+// Controllers
+import { updateUserRoleController, updateUserStatusController, deleteUserController } from "@/controllers/Global/UserController";
 // Models
 import { UserToManageType } from "@/models/UserModel"
-// Context
-import { useUser } from "@/context/UserContext";
 // Icons
 import { UserSearchIcon, TrashIcon } from "@/icons/Icons"
+// Utils
+import { useState } from "react";
+import { useAuth } from "@clerk/nextjs";
+import Image from "next/image";
+import { toast } from "sonner";
 
 
 export default function UserManagementComponent(
@@ -15,25 +18,84 @@ export default function UserManagementComponent(
     :
     { readonly users: UserToManageType[] }
 ) {
-    const { isAdmin } = useUser()
+    const { getToken } = useAuth()
 
-    const handleRoleChange = (userId: string, newRole: "admin" | "user") => {
-        console.log("updating-role", userId, newRole)
-    }
+    const [localUsers, setLocalUsers] = useState(users)
 
-    const handleStatusChange = (userId: string, newStatus: boolean) => {
-        console.log("updating-status", userId, newStatus)
-    }
-
-    const handleDeleteUser = (userId: string) => {
-        console.log("deleting-user", userId)
-    }
-
-    // No admin access State
-    if (!isAdmin) {
-        return (
-            <ErrorComponent message="No tienes permiso para acceder a esta página" />
+    const handleRoleChange = async (userId: string, newRole: "admin" | "user") => {
+        const originalUsers = [...localUsers]
+        const toastId = toast.loading("Actualizando rol...")
+        setLocalUsers((prevUsers) =>
+            prevUsers.map((user) =>
+                user._id === userId ? { ...user, isAdmin: newRole === "admin" } : user
+            )
         )
+
+        const token = await getToken()
+        if (!token) {
+            toast.error("Usuario no autenticado", { id: toastId })
+            setLocalUsers(originalUsers)
+            return
+        }
+
+        const result = await updateUserRoleController(token, userId, newRole)
+        if (result.error) {
+            toast.error(result.error, { id: toastId })
+            setLocalUsers(originalUsers)
+            return
+        }
+
+        toast.success("Rol actualizado", { id: toastId })
+    }
+
+    const handleStatusChange = async (userId: string, newStatus: boolean) => {
+        const originalUsers = [...localUsers]
+        const toastId = toast.loading("Actualizando estado...")
+        setLocalUsers((prevUsers) =>
+            prevUsers.map((user) =>
+                user._id === userId ? { ...user, isDisabled: newStatus } : user
+            )
+        )
+
+        const token = await getToken()
+        if (!token) {
+            toast.error("Usuario no autenticado", { id: toastId })
+            setLocalUsers(originalUsers)
+            return
+        }
+
+        const result = await updateUserStatusController(token, userId, newStatus)
+        if (result.error) {
+            toast.error(result.error, { id: toastId })
+            setLocalUsers(originalUsers)
+            return
+        }
+
+        toast.success("Estado actualizado", { id: toastId })
+    }
+
+    const handleDeleteUser = async (userId: string) => {
+        const originalUsers = [...localUsers]
+        const toastId = toast.loading("Eliminando usuario...")
+        setLocalUsers((prevUsers) =>
+            prevUsers.filter((user) => user._id !== userId)
+        )
+
+        const token = await getToken()
+        if (!token) {
+            toast.error("Usuario no autenticado", { id: toastId })
+            setLocalUsers(originalUsers)
+            return
+        }
+
+        const result = await deleteUserController(token, userId)
+        if (result.error) {
+            toast.error(result.error, { id: toastId })
+            setLocalUsers(originalUsers)
+            return
+        }
+
+        toast.success("Usuario eliminado", { id: toastId })
     }
 
     return (
@@ -62,11 +124,11 @@ export default function UserManagementComponent(
 
                     {/* User Count */}
                     <p className="text-body-sm text-on-surface-variant">
-                        Mostrando {users.length} {users.length === 1 ? "usuario" : "usuarios"}
+                        Mostrando {localUsers.length} {localUsers.length === 1 ? "usuario" : "usuarios"}
                     </p>
                 </div>
 
-                {users.length == 0
+                {localUsers.length == 0
                     ?   // Empty State
                         <div className="p-5">
                             <p className="error-text">No hay usuarios para mostrar</p>
@@ -84,20 +146,28 @@ export default function UserManagementComponent(
                                 </thead>
 
                                 <tbody className="divide-y divide-outline-variant">
-                                    {users.map((user) => (
+                                    {localUsers.map((user) => (
                                         <tr
                                             key={user._id}
-                                            className="hover:bg-surface-container-low transition-colors group"
+                                            className="hover:bg-surface-container-low transition-colors"
                                         >
                                             {/* User Information */}
                                             <td className="px-lg py-4">
                                                 <div className="flex items-center gap-md">
-                                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold">
-                                                        {user.fullName.split(" ").map((namePart) => namePart[0]).join("").toUpperCase()}
+                                                    <div className="overflow-hidden relative w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold">
+                                                        {user.imageUrl
+                                                            ?   <Image
+                                                                    src={user.imageUrl}
+                                                                    alt={user.fullName}
+                                                                    fill
+                                                                    className="object-cover"
+                                                                />
+                                                            :   user.fullName.split(" ").map((namePart) => namePart[0]).join("").toUpperCase()
+                                                        }
                                                     </div>
 
                                                     <div>
-                                                        <p className="font-body-md font-semibold text-on-surface">{user.fullName}</p>
+                                                        {user.fullName && <p className="font-body-md font-semibold text-on-surface">{user.fullName}</p>}
                                                         <p className="text-body-sm text-on-surface-variant">{user.email}</p>
                                                     </div>
                                                 </div>
@@ -131,15 +201,17 @@ export default function UserManagementComponent(
                                                         <div className="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary" />
                                                     </button>
 
-                                                    <span className="text-body-sm font-medium text-secondary">{user.isDisabled ? "Inactivo" : "Activo"}</span>
+                                                    <span className={`text-body-sm font-medium ${user.isDisabled ? 'text-on-primary-container' : 'text-secondary'}`}>
+                                                        {user.isDisabled ? "Inactivo" : "Activo"}
+                                                    </span>
                                                 </div>
                                             </td>
 
                                             {/* Action Buttons */}
                                             <td className="px-lg py-4 text-right">
                                                 <button
-                                                    className="p-2 rounded-lg transition-colors cursor-pointer text-error hover:bg-error-container"
-                                                    onClick={() => handleDeleteUser(user._id!)}
+                                                    className="p-2 rounded-lg transition-colors cursor-pointer active:scale-95 text-error hover:bg-error-container"
+                                                    onClick={() => handleDeleteUser(user.userId!)}
                                                 >
                                                     <div className="h-6">
                                                         <TrashIcon size={"fill"} color="#ba1a1a" />

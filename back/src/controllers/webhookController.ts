@@ -38,5 +38,17 @@ export const handleClerkWebhook = async (req: Request, res: Response): Promise<v
         }
     }
 
+    if (event.type === 'user.deleted') {
+        const { id } = event.data
+
+        try {
+            await User.findOneAndDelete({ userId: id })
+        } catch (error) {
+            console.error('❌ Error eliminando usuario:', error)
+            res.status(500).json({ error: 'Error eliminando usuario' })
+            return
+        }
+    }
+
     res.status(200).json({ received: true })
 }
