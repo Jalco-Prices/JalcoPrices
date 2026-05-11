@@ -1,6 +1,6 @@
 import {
     IconSearch, IconUserCircle, IconFilter2, IconSortDescending, IconChevronLeft, IconChevronRight, IconArrowLeft,
-    IconBarcode, IconRosetteDiscountCheck, IconInfoCircle, IconCash
+    IconBarcode, IconRosetteDiscountCheck, IconInfoCircle, IconCash, IconUserSearch, IconTrash
 } from '@tabler/icons-react';
 
 
@@ -111,5 +111,25 @@ export const CashIcon = (
 ) => {
     return (
         <IconCash size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const UserSearchIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconUserSearch size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const TrashIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconTrash size={size} stroke={stroke} color={color} />
     )
 }

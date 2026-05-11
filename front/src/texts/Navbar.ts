@@ -12,5 +12,11 @@ export const menuContentNavLinks = [
         label: "Crear producto",
         href: "/create-product",
         justAdminView: true
+    },
+    {
+        value: "user-management",
+        label: "Gestión de usuarios",
+        href: "/user-management",
+        justAdminView: true
     }
 ]

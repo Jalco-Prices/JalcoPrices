@@ -132,6 +132,7 @@ export default function ProductFormComponent(
                                 className="object-cover"
                                 sizes="undefined"
                                 loading="eager"
+                                unoptimized={true}
                             />
                         </div>
                         <button
