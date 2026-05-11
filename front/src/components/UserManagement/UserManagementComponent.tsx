@@ -21,6 +21,16 @@ export default function UserManagementComponent(
     const { getToken } = useAuth()
 
     const [localUsers, setLocalUsers] = useState(users)
+    const [searchValue, setSearchValue] = useState("")
+
+    const filteredUsers = localUsers.filter((user) => {
+        const searchLower = searchValue.toLowerCase()
+        return (
+            user.fullName.toLowerCase().includes(searchLower) ||
+            user.email.toLowerCase().includes(searchLower) ||
+            (user.isAdmin ? "admin" : "usuario").includes(searchLower)
+        )
+    })
 
     const handleRoleChange = async (userId: string, newRole: "admin" | "user") => {
         const originalUsers = [...localUsers]
@@ -119,16 +129,18 @@ export default function UserManagementComponent(
                             type="text"
                             placeholder="Filtrar por nombre, correo o rol..."
                             className="w-full md:w-96 px-2 py-2 text-body-sm focus:outline-none"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
                         />
                     </div>
 
                     {/* User Count */}
                     <p className="text-body-sm text-on-surface-variant">
-                        Mostrando {localUsers.length} {localUsers.length === 1 ? "usuario" : "usuarios"}
+                        Mostrando {filteredUsers.length} {filteredUsers.length === 1 ? "usuario" : "usuarios"}
                     </p>
                 </div>
 
-                {localUsers.length == 0
+                {filteredUsers.length == 0
                     ?   // Empty State
                         <div className="p-5">
                             <p className="error-text">No hay usuarios para mostrar</p>
@@ -146,7 +158,7 @@ export default function UserManagementComponent(
                                 </thead>
 
                                 <tbody className="divide-y divide-outline-variant">
-                                    {localUsers.map((user) => (
+                                    {filteredUsers.map((user) => (
                                         <tr
                                             key={user._id}
                                             className="hover:bg-surface-container-low transition-colors"
