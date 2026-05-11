@@ -5,9 +5,9 @@ import { AnyProductType } from "@/models/ProductModel"
 
 
 export default function CatalogProductsGridComponent(
-    { products, filter, order }
+    { products }
     :
-    { readonly products: AnyProductType[], readonly filter: string | null, readonly order: string | null }
+    { readonly products: AnyProductType[]}
 ) {
     return (
         <section className="catalog-products-grid">

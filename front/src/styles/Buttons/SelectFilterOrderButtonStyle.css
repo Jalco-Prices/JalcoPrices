@@ -18,16 +18,25 @@
 }
 
 .select-filter-order-button-icon {
-    @apply h-3.5;
+    @apply shrink-0 h-3.5;
 }
 
-.select-filter-order-options-container {
+.select-filter-order-button-label {
+    @apply max-w-72 truncate;
+}
+
+.select-filter-order-options-wrapper {
     box-shadow: 
         -4px 4px 16px rgba(0, 0, 0, 0.08),
         4px 4px 16px rgba(0, 0, 0, 0.08),
         0px 6px 16px rgba(0, 0, 0, 0.08);
-    @apply absolute top-full right-0 z-70 overflow-hidden border rounded-b-lg
+    @apply overflow-hidden absolute z-70 top-full right-0 max-h-96
+    border rounded-b-lg
     border-outline-variant bg-white w-max;
+}
+
+.select-filter-order-options-container {
+    @apply overflow-auto max-h-96;
 }
 
 .select-filter-order-option {

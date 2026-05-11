@@ -12,20 +12,16 @@ import { useProducts } from "@/context/ProductsContext"
 import { useState, useRef } from "react";
 
 
-const filtersOptions = [
-    { label: "Envase", value: "container" },
-    { label: "Capacidad", value: "capacity" },
-]
-
 const orderOptions = [
-    { label: "Precio Ascendente", value: "price-asc" },
-    { label: "Precio Descendente", value: "price-desc" },
+    { label: "Ordenar", value: "all" },
     { label: "Nombre Ascendente", value: "name-asc" },
     { label: "Nombre Descendente", value: "name-desc" },
+    { label: "Precio Ascendente", value: "price-asc" },
+    { label: "Precio Descendente", value: "price-desc" },
 ]
 
 export default function CatalogComponent() {
-    const { products } = useProducts()
+    const { products: allProducts } = useProducts()
     const [isShowingFilters, setIsShowingFilters] = useState(false)
     const [isShowingOrderOptions, setIsShowingOrderOptions] = useState(false)
     const [selectedFilter, setSelectedFilter] = useState<string | null>(null)
@@ -33,6 +29,35 @@ export default function CatalogComponent() {
     const [currentPage, setCurrentPage] = useState(1)
 
     const paginationRef = useRef<HTMLDivElement>(null)
+
+    const filtersOptions = [
+        { label: "Filtrar", value: "all" },
+        ...Array.from(
+            new Set(allProducts.map((product) => product.categoria.split(" ")[0]))
+        ).map((categoria) => ({
+            label: categoria,
+            value: categoria,
+        })),
+    ];
+
+    const sortedProducts = [...allProducts].sort((a, b) => {
+            if (selectedOrder === "name-asc") {
+                return a.nombre.localeCompare(b.nombre)
+            } else if (selectedOrder === "name-desc") {
+                return b.nombre.localeCompare(a.nombre)
+            } else if (selectedOrder === "price-asc") {
+                return a.precioMenudeo - b.precioMenudeo
+            } else if (selectedOrder === "price-desc") {
+                return b.precioMenudeo - a.precioMenudeo
+            }
+            return 0
+        })
+
+    const products = selectedFilter && selectedFilter !== "all"
+        ? sortedProducts.filter((product) => {
+            return product.categoria.includes(selectedFilter)
+        })
+        : sortedProducts
 
     const PRODUCTS_PER_PAGE = 8
     const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE)
@@ -78,7 +103,7 @@ export default function CatalogComponent() {
                 <div className="catalog-selects-container">
                     {/* Filter Select Button */}
                     <SelectFilterOrderButtonComponent
-                        label="Filtrar"
+                        label={filtersOptions.find((f) => f.value === selectedFilter)?.label || "Filtrar"}
                         iconName="filter"
                         options={filtersOptions}
                         isShowingOptions={isShowingFilters}
@@ -88,7 +113,7 @@ export default function CatalogComponent() {
 
                     {/* Order Select Button */}
                     <SelectFilterOrderButtonComponent
-                        label="Ordenar"
+                        label={orderOptions.find((o) => o.value === selectedOrder)?.label || "Ordenar"}
                         iconName="sort"
                         options={orderOptions}
                         isShowingOptions={isShowingOrderOptions}
@@ -102,16 +127,11 @@ export default function CatalogComponent() {
             <div className="catalog-products-grid-wrapper">
                 <CatalogProductsGridComponent
                     products={paginatedProducts}
-                    filter={selectedFilter}
-                    order={selectedOrder}
                 />
             </div>
 
             {/* Pagination Actions */}
-            <div
-                
-                className="catalog-pagination-actions-wrapper"
-            >
+            <div className="catalog-pagination-actions-wrapper">
                 <PaginationActionsComponent
                     currentPage={currentPage}
                     totalPages={totalPages}

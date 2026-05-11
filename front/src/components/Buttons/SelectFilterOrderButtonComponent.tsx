@@ -53,24 +53,26 @@ export default function SelectFilterOrderButtonComponent(
                     </div>
                     
                     {/* Label */}
-                    {label}
+                    <div className="select-filter-order-button-label">{label}</div>
                 </button>
 
                 {/* Options */}
                 {isShowingOptions && (
-                    <div ref={optionsRef} className="select-filter-order-options-container">
-                        {options.map((option) => (
-                            <div
-                                key={option.value}
-                                className="select-filter-order-option"
-                                onClick={() => {
-                                    setSelectedOption(option.value)
-                                    setIsShowingOptions(false)
-                                }}
-                            >
-                                {option.label}
-                            </div>
-                        ))}
+                    <div ref={optionsRef} className="select-filter-order-options-wrapper">
+                        <div className="select-filter-order-options-container">
+                            {options.map((option) => (
+                                <div
+                                    key={option.value}
+                                    className="select-filter-order-option"
+                                    onClick={() => {
+                                        setSelectedOption(option.value)
+                                        setIsShowingOptions(false)
+                                    }}
+                                >
+                                    {option.label}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
             </section>

@@ -10,6 +10,10 @@ export default function PaginationActionsComponent(
     { readonly currentPage: number, readonly totalPages: number, readonly setCurrentPage: (page: number) => void }
 ) {
     const getVisiblePages = (): (number | '...')[] => {
+        if (totalPages <= 3) {
+            return Array.from({ length: totalPages }, (_, i) => i + 1)
+        }
+
         const isStart = currentPage <= 3
         const isEnd = currentPage >= totalPages - 2
 
