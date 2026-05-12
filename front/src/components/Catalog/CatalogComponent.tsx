@@ -9,7 +9,8 @@ import PaginationActionsComponent from "../Buttons/PaginationActionsComponent";
 // Context
 import { useProducts } from "@/context/ProductsContext"
 // Utils
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 
 const orderOptions = [
@@ -20,13 +21,21 @@ const orderOptions = [
     { label: "Precio Descendente", value: "price-desc" },
 ]
 
-export default function CatalogComponent() {
+export default function CatalogComponent(
+    { filterParam, sortParam, pageParam }
+    :
+    { readonly filterParam?: string; readonly sortParam?: string; readonly pageParam?: string }
+) {
     const { products: allProducts } = useProducts()
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const pathname = usePathname()
+    
     const [isShowingFilters, setIsShowingFilters] = useState(false)
     const [isShowingOrderOptions, setIsShowingOrderOptions] = useState(false)
-    const [selectedFilter, setSelectedFilter] = useState<string | null>(null)
-    const [selectedOrder, setSelectedOrder] = useState<string | null>(null)
-    const [currentPage, setCurrentPage] = useState(1)
+    const [selectedFilter, setSelectedFilter] = useState<string | null>(filterParam || null)
+    const [selectedOrder, setSelectedOrder] = useState<string | null>(sortParam || null)
+    const [currentPage, setCurrentPage] = useState(pageParam ? Number.parseInt(pageParam, 10) : 1)
 
     const paginationRef = useRef<HTMLDivElement>(null)
 
@@ -85,6 +94,20 @@ export default function CatalogComponent() {
             })
         })
     }
+
+    // Update URL Params
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams.toString())
+        if (selectedFilter) {
+            params.set('filter', selectedFilter)
+        }
+        if (selectedOrder) {
+            params.set('sort', selectedOrder)
+        }
+        params.set('page', currentPage.toString())
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedFilter, selectedOrder, currentPage]);
 
     return (
         <section ref={paginationRef} className="section-container">
