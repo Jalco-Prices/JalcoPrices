@@ -6,7 +6,7 @@ import ReturnButtonComponent from "../Buttons/ReturnButtonComponent"
 import ProductFormComponent from "../Global/ProductFormComponent"
 import SecondaryActionButtonComponent from "../Buttons/SecondaryActionButtonComponent"
 // Models
-import { ProductType } from "@/models/ProductModel"
+import { ProductType, AnyProductType } from "@/models/ProductModel"
 // Utils
 import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
@@ -15,9 +15,9 @@ import { toast } from 'sonner'
 
 
 export default function ProductDetailsAdminComponent(
-    { product, editProduct, deleteProduct }
+    { product, complementProducts, editProduct, deleteProduct }
     :
-    { readonly product: ProductType, readonly editProduct: (token: string, updatedData: ProductType) => Promise<{ success: boolean, error: string | null }>, readonly deleteProduct: (token: string, id: string) => Promise<{ success: boolean, error: string | null }> }
+    { readonly product: ProductType, readonly complementProducts: AnyProductType[], readonly editProduct: (token: string, updatedData: ProductType) => Promise<{ success: boolean, error: string | null }>, readonly deleteProduct: (token: string, id: string) => Promise<{ success: boolean, error: string | null }> }
 ) {
     const { getToken } = useAuth()
     const router = useRouter()
@@ -154,6 +154,7 @@ export default function ProductDetailsAdminComponent(
             <ProductFormComponent
                 type="details"
                 product={product}
+                complementProducts={complementProducts}
                 localProduct={localProduct}
                 isShowBarcode={isShowBarcode}
                 setLocalProduct={setLocalProduct}

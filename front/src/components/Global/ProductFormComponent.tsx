@@ -4,9 +4,9 @@
 import ProductDetailsInput from "../Inputs/ProductDetailsInput"
 import BarcodeModalComponent from "./BarcodeModalComponent";
 // Models
-import { ProductType } from "@/models/ProductModel"
+import { ProductType, AnyProductType } from "@/models/ProductModel"
 // Icons
-import { BarcodeIcon, InfoCircleIcon, CashIcon } from "@/icons/Icons"
+import { BarcodeIcon, InfoCircleIcon, CashIcon, LinkIcon, ArrowDownIcon, ArrowUpIcon, CheckIcon } from "@/icons/Icons"
 // Images
 import ImageNotFound from "@/assets/images/ImageNotFound.png"
 // Utils
@@ -46,17 +46,29 @@ function formatUpdatedAt(date: string): string {
 
 
 export default function ProductFormComponent(
-    { type, product, localProduct, isShowBarcode, setLocalProduct, setIsShowBarcode }
+    { type, product, complementProducts, localProduct, isShowBarcode, setLocalProduct, setIsShowBarcode }
     :
     {
-        readonly type: typeOptions, readonly product?: ProductType, readonly localProduct: ProductType, readonly isShowBarcode: boolean,
+        readonly type: typeOptions, readonly product?: ProductType, readonly complementProducts: AnyProductType[], readonly localProduct: ProductType, readonly isShowBarcode: boolean,
         readonly setLocalProduct: Dispatch<SetStateAction<ProductType>>, readonly setIsShowBarcode: (show: boolean) => void
     }
 ) {
     const [productUpdatedAt, setProductUpdatedAt] = useState(product?.updatedAt)
     const [isMounted, setIsMounted] = useState(false)
+    const [isShowRelatedProducts, setIsShowRelatedProducts] = useState(false)
+    const [selectedProducts, setSelectedProducts] = useState<AnyProductType[]>([]);
 
     const updatedAtRef = useRef(product?.updatedAt)
+
+    // Handle complement products selection
+    const handleToggleProduct = (product: AnyProductType) => {
+        setSelectedProducts(prev => {
+            const isSelected = prev.some(p => p._id === product._id);
+            return isSelected
+                ? prev.filter(p => p._id !== product._id)
+                : [...prev, product];
+        });
+    };
 
     // Function to modify Product Profit Margin
     const modifyProductProfitMargin = (wholesalePrice: number, priceWithVat: number) => {
@@ -224,8 +236,9 @@ export default function ProductFormComponent(
                             <div className="h-6">
                                 <CashIcon size="fill" color="#0058be" />
                             </div>
-                            <h2 className="font-h3 text-h3 text-primary">Precios</h2>
+                            <h2 className="font-inter text-h3 text-primary">Precios</h2>
                         </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-lg">
                             <ProductDetailsInput
                                 id="product-retail-price"
@@ -295,6 +308,97 @@ export default function ProductFormComponent(
                             />
                         </div>
                     </section>
+
+                    {/* Complement Products Section */}
+                    {type === "details" &&
+                        <section className="overflow-hidden rounded-xl border shadow-sm border-outline-variant bg-surface-container-lowest">
+                            {/* Section Header */}
+                            <button
+                                className="group w-full flex items-start sm:items-center justify-between p-lg transition-colors cursor-pointer hover:bg-surface-container-low"
+                                onClick={() => setIsShowRelatedProducts(!isShowRelatedProducts)}
+                            >
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-sm">
+                                    <div className="flex items-center gap-sm">
+                                        {/* Section Icon */}
+                                        <div className="h-6">
+                                            <LinkIcon size="fill" color="#0058be" />
+                                        </div>
+
+                                        {/* Section Title */}
+                                        <h2 className="font-inter text-h3 text-primary">Complementos</h2>
+                                    </div>
+
+                                    {/* Selected Count */}
+                                    <p className="ml-md w-fit px-2 py-0.5 text-xs font-bold rounded-full text-secondary bg-secondary/10">
+                                        {selectedProducts.length} SELECCIONADOS
+                                    </p>
+                                </div>
+                                
+                                {/* Arrows Icon */}
+                                <div className="h-6">
+                                    {isShowRelatedProducts
+                                        ?   <ArrowUpIcon size="fill" color="#45464d" />
+                                        :   <ArrowDownIcon size="fill" color="#45464d" />
+                                    }
+                                </div>
+                            </button>
+
+                            {/* Content Section */}
+                            {isShowRelatedProducts && complementProducts.length > 0 &&
+                                <div className="p-lg pt-0 border-t transition-all duration-300 border-outline-variant/30">
+                                    {/* Products Grid */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-md mt-lg">
+                                        {complementProducts.map((product: AnyProductType) => {
+                                            const isSelected = selectedProducts.some(p => p._id === product._id);
+                                            return (
+                                                <button
+                                                    key={product._id}
+                                                    onClick={() => handleToggleProduct(product)}
+                                                    className={`relative p-md text-left border-2 rounded-xl cursor-pointer transition-all bg-surface-container-lowest
+                                                        ${isSelected
+                                                            ? "border-secondary ring-2 ring-secondary/20 hover:shadow-md"
+                                                            : "border-outline-variant hover:border-outline"
+                                                        }`}
+                                                >
+                                                    {/* Checkmark Icon */}
+                                                    {isSelected && (
+                                                        <div className="absolute z-10 top-2 right-2 p-0.75 rounded-full flex items-center justify-center bg-secondary">
+                                                            <div className="h-3.75">
+                                                                <CheckIcon size="fill" color="white" />
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    <div className="flex gap-md">
+                                                        <div className="overflow-hidden relative w-20 h-20 rounded-lg shrink-0 bg-surface-container">
+                                                            <Image
+                                                                src={product.imagen == "" || product.imagen == null ? ImageNotFound : product.imagen}
+                                                                alt={`${product.nombre} Image`}
+                                                                fill
+                                                                className="object-cover"
+                                                                loading="eager"
+                                                            />
+                                                        </div>
+
+                                                        <div className="flex flex-col justify-between">
+                                                            <h4 className="font-inter font-semibold line-clamp-2 text-primary">
+                                                                {product.nombre}
+                                                            </h4>
+
+                                                            <div className="space-y-1 text-xs font-inter text-on-surface-variant">
+                                                                <p>Menudeo <span className="text-on-surface">${product.precioMenudeo.toFixed(2)}</span></p>
+                                                                <p>Mayoreo <span className="text-on-surface">${product.precioMayoreo.toFixed(2)}</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            }
+                        </section>
+                    }
                 </div>
             </div>
 

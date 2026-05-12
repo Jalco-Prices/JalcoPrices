@@ -1,6 +1,7 @@
 import {
     IconSearch, IconUserCircle, IconFilter2, IconSortDescending, IconChevronLeft, IconChevronRight, IconArrowLeft,
-    IconBarcode, IconRosetteDiscountCheck, IconInfoCircle, IconCash, IconUserSearch, IconTrash
+    IconBarcode, IconRosetteDiscountCheck, IconInfoCircle, IconCash, IconUserSearch, IconTrash, IconLink,
+    IconChevronDown, IconChevronUp, IconCheck
 } from '@tabler/icons-react';
 
 
@@ -131,5 +132,45 @@ export const TrashIcon = (
 ) => {
     return (
         <IconTrash size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const LinkIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconLink size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const ArrowDownIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconChevronDown size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const ArrowUpIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconChevronUp size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const CheckIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconCheck size={size} stroke={stroke} color={color} />
     )
 }

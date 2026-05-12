@@ -17,6 +17,7 @@ export default function ProductDetailsBrainComponent(
     const { products, editProduct, deleteProduct } = useProducts()
 
     const product = products.find((p: AnyProductType) => p._id === id)
+    const complementProducts = products.filter((p: AnyProductType) => p.nombreGenerico === product?.nombreGenerico && p._id !== id)
 
     if (!product) {
         return (
@@ -31,6 +32,7 @@ export default function ProductDetailsBrainComponent(
             ?   //Admin View
                 <ProductDetailsAdminComponent
                     product={product}
+                    complementProducts={complementProducts}
                     editProduct={editProduct}
                     deleteProduct={deleteProduct}
                 />
