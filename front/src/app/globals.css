@@ -148,7 +148,7 @@ body {
 }
 
 .full-overlay {
-  @apply absolute z-60 top-0 left-0 h-svh w-svw;
+  @apply absolute z-48 top-0 left-0 h-svh w-svw;
 }
 
 .auth-container {

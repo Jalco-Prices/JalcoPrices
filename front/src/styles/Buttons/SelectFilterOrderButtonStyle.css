@@ -30,7 +30,7 @@
         -4px 4px 16px rgba(0, 0, 0, 0.08),
         4px 4px 16px rgba(0, 0, 0, 0.08),
         0px 6px 16px rgba(0, 0, 0, 0.08);
-    @apply overflow-hidden absolute z-70 top-full right-0 max-h-96
+    @apply overflow-hidden absolute z-49 top-full right-0 max-h-96
     border rounded-b-lg
     border-outline-variant bg-white w-max;
 }

@@ -17,6 +17,7 @@ export default function SelectFilterOrderButtonComponent(
 ) {
     const [optionsWidth, setOptionsWidth] = useState<number | null>(null)
 
+    const selectSectionRef = useRef<HTMLDivElement>(null)
     const optionsRef = useRef<HTMLDivElement>(null)
     const uid = useId().replaceAll("-", "")
 
@@ -30,6 +31,28 @@ export default function SelectFilterOrderButtonComponent(
         }
     }, [isShowingOptions])
 
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (
+                selectSectionRef.current &&
+                !selectSectionRef.current.contains(event.target as Node)
+            ) {
+                setIsShowingOptions(false)
+            }
+        }
+
+        if (!isHoverDevice) {
+            document.addEventListener("mousedown", handleClickOutside)
+        }
+
+        return () => {
+            if (!isHoverDevice) {
+                document.removeEventListener("mousedown", handleClickOutside)
+            }
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isHoverDevice])
+
     return (
         <>
             {optionsWidth && (
@@ -37,6 +60,7 @@ export default function SelectFilterOrderButtonComponent(
             )}
 
             <section
+                ref={selectSectionRef}
                 className="select-filter-order-section-container"
                 onMouseLeave={isHoverDevice ? () => setIsShowingOptions(false) : undefined}
             >
@@ -76,14 +100,6 @@ export default function SelectFilterOrderButtonComponent(
                     </div>
                 )}
             </section>
-
-            {/* Overlay Close */}
-            {isShowingOptions && !isHoverDevice && (
-                <button
-                    className="full-overlay"
-                    onClick={() => setIsShowingOptions(false)}
-                />
-            )}
         </>
     )
 }

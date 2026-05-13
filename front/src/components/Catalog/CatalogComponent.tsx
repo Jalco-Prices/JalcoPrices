@@ -11,6 +11,7 @@ import { useProducts } from "@/context/ProductsContext"
 // Utils
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useProductsPerPage } from "@/hooks/useProductsPerPage";
 
 
 const orderOptions = [
@@ -68,11 +69,11 @@ export default function CatalogComponent(
         })
         : sortedProducts
 
-    const PRODUCTS_PER_PAGE = 8
-    const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE)
+    const productsPerPage = useProductsPerPage()
+    const totalPages = Math.ceil(products.length / productsPerPage)
     const paginatedProducts = products.slice(
-        (currentPage - 1) * PRODUCTS_PER_PAGE,
-        currentPage * PRODUCTS_PER_PAGE
+        (currentPage - 1) * productsPerPage,
+        currentPage * productsPerPage
     )
 
     const handleFilterChange = (filter: string | null) => {
