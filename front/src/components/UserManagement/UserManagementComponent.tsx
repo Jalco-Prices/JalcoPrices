@@ -22,6 +22,7 @@ export default function UserManagementComponent(
 
     const [localUsers, setLocalUsers] = useState(users)
     const [searchValue, setSearchValue] = useState("")
+    const [isUpdating, setIsUpdating] = useState(false)
 
     const filteredUsers = localUsers.filter((user) => {
         const searchLower = searchValue.toLowerCase()
@@ -34,6 +35,7 @@ export default function UserManagementComponent(
 
     const handleRoleChange = async (userId: string, newRole: "admin" | "user") => {
         const originalUsers = [...localUsers]
+        setIsUpdating(true)
         const toastId = toast.loading("Actualizando rol...")
         setLocalUsers((prevUsers) =>
             prevUsers.map((user) =>
@@ -45,6 +47,7 @@ export default function UserManagementComponent(
         if (!token) {
             toast.error("Usuario no autenticado", { id: toastId })
             setLocalUsers(originalUsers)
+            setIsUpdating(false)
             return
         }
 
@@ -52,14 +55,17 @@ export default function UserManagementComponent(
         if (result.error) {
             toast.error(result.error, { id: toastId })
             setLocalUsers(originalUsers)
+            setIsUpdating(false)
             return
         }
 
         toast.success("Rol actualizado", { id: toastId })
+        setIsUpdating(false)
     }
 
     const handleStatusChange = async (userId: string, newStatus: boolean) => {
         const originalUsers = [...localUsers]
+        setIsUpdating(true)
         const toastId = toast.loading("Actualizando estado...")
         setLocalUsers((prevUsers) =>
             prevUsers.map((user) =>
@@ -71,6 +77,7 @@ export default function UserManagementComponent(
         if (!token) {
             toast.error("Usuario no autenticado", { id: toastId })
             setLocalUsers(originalUsers)
+            setIsUpdating(false)
             return
         }
 
@@ -78,14 +85,17 @@ export default function UserManagementComponent(
         if (result.error) {
             toast.error(result.error, { id: toastId })
             setLocalUsers(originalUsers)
+            setIsUpdating(false)
             return
         }
 
         toast.success("Estado actualizado", { id: toastId })
+        setIsUpdating(false)
     }
 
     const handleDeleteUser = async (userId: string) => {
         const originalUsers = [...localUsers]
+        setIsUpdating(true)
         const toastId = toast.loading("Eliminando usuario...")
         setLocalUsers((prevUsers) =>
             prevUsers.filter((user) => user._id !== userId)
@@ -95,6 +105,7 @@ export default function UserManagementComponent(
         if (!token) {
             toast.error("Usuario no autenticado", { id: toastId })
             setLocalUsers(originalUsers)
+            setIsUpdating(false)
             return
         }
 
@@ -102,10 +113,12 @@ export default function UserManagementComponent(
         if (result.error) {
             toast.error(result.error, { id: toastId })
             setLocalUsers(originalUsers)
+            setIsUpdating(false)
             return
         }
 
         toast.success("Usuario eliminado", { id: toastId })
+        setIsUpdating(false)
     }
 
     return (
@@ -188,8 +201,9 @@ export default function UserManagementComponent(
                                             {/* User Role */}
                                             <td className="px-lg py-4">
                                                 <select
+                                                    disabled={isUpdating}
                                                     value={user.isAdmin ? "admin" : "user"}
-                                                    className="bg-white border border-outline-variant rounded-md text-body-sm py-1 pl-2 pr-8 focus:ring-secondary cursor-pointer"
+                                                    className="rounded-md text-body-sm py-1 pl-2 pr-8 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus:ring-secondary disabled:bg-gray-100 border-outline-variant bg-white border"
                                                     onChange={(e) => handleRoleChange(user._id!, e.target.value as "admin" | "user") }
                                                 >
                                                     <option value={"admin"} >Admin</option>
@@ -201,7 +215,8 @@ export default function UserManagementComponent(
                                             <td className="px-lg py-4">
                                                 <div className="flex items-center gap-md">
                                                     <button
-                                                        className="relative inline-flex items-center cursor-pointer"
+                                                        disabled={isUpdating}
+                                                        className="relative inline-flex items-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                                         onClick={() => handleStatusChange(user._id!, !user.isDisabled) }
                                                     >
                                                         <input
@@ -213,7 +228,7 @@ export default function UserManagementComponent(
                                                         <div className="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary" />
                                                     </button>
 
-                                                    <span className={`text-body-sm font-medium ${user.isDisabled ? 'text-on-primary-container' : 'text-secondary'}`}>
+                                                    <span className={`text-body-sm font-medium transition-opacity ${user.isDisabled ? 'text-on-primary-container' : 'text-secondary'} ${isUpdating ? 'opacity-50' : ''}`}>
                                                         {user.isDisabled ? "Inactivo" : "Activo"}
                                                     </span>
                                                 </div>
@@ -222,7 +237,8 @@ export default function UserManagementComponent(
                                             {/* Action Buttons */}
                                             <td className="px-lg py-4 text-right">
                                                 <button
-                                                    className="p-2 rounded-lg transition-colors cursor-pointer active:scale-95 text-error hover:bg-error-container"
+                                                    disabled={isUpdating}
+                                                    className="p-2 rounded-lg transition-colors cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 disabled:hover:bg-transparent text-error hover:bg-error-container"
                                                     onClick={() => handleDeleteUser(user.userId!)}
                                                 >
                                                     <div className="h-6">

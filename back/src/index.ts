@@ -22,6 +22,9 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
 }))
 
+// Webhook Middleware
+app.use('/webhooks', express.raw({ type: 'application/json' }))
+
 app.use(express.json())
 
 // Routes

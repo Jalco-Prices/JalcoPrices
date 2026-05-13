@@ -13,7 +13,7 @@ export const handleClerkWebhook = async (req: Request, res: Response): Promise<v
 
     let event: any
     try {
-        event = wh.verify(JSON.stringify(req.body), {
+        event = wh.verify(req.body, {
             'svix-id': req.headers['svix-id'] as string,
             'svix-timestamp': req.headers['svix-timestamp'] as string,
             'svix-signature': req.headers['svix-signature'] as string,

@@ -120,6 +120,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
         } catch (error) {
             console.error('Error eliminando usuario de Clerk:', error)
             res.status(500).json({ error: 'Error eliminando usuario' })
+            return
         }
 
         res.status(200).json({ message: 'Usuario eliminado' })
