@@ -1,7 +1,7 @@
 import {
     IconSearch, IconUserCircle, IconFilter2, IconSortDescending, IconChevronLeft, IconChevronRight, IconArrowLeft,
     IconBarcode, IconRosetteDiscountCheck, IconInfoCircle, IconCash, IconUserSearch, IconTrash, IconLink,
-    IconChevronDown, IconChevronUp, IconCheck
+    IconChevronDown, IconChevronUp, IconCheck, IconX, IconPlus, IconMinus
 } from '@tabler/icons-react';
 
 
@@ -172,5 +172,35 @@ export const CheckIcon = (
 ) => {
     return (
         <IconCheck size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const XIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconX size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const PlusIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconPlus size={size} stroke={stroke} color={color} />
+    )
+}
+
+export const MinusIcon = (
+    { size, stroke=2, color="black" }
+    :
+    { readonly size: number | string, readonly stroke?: number, readonly color?: string }
+) => {
+    return (
+        <IconMinus size={size} stroke={stroke} color={color} />
     )
 }

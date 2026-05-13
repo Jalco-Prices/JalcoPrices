@@ -407,6 +407,9 @@ export default function ProductFormComponent(
                 <BarcodeModalComponent
                     name={localProduct.nombre}
                     barcode={localProduct.codigoDeBarras}
+                    menudeo={localProduct.precioMenudeo}
+                    mayoreo={localProduct.precioMayoreo}
+                    selectedProducts={selectedProducts}
                     setIsShowBarcode={setIsShowBarcode}
                 />
             }

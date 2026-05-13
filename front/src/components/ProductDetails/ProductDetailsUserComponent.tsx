@@ -132,6 +132,9 @@ export default function ProductDetailsUserComponent(
                 <BarcodeModalComponent
                     name={product.nombre}
                     barcode={product.codigoDeBarras}
+                    menudeo={product.precioMenudeo}
+                    mayoreo={product.precioMayoreo}
+                    selectedProducts={[]}
                     setIsShowBarcode={setIsShowBarcode}
                 />
             }
