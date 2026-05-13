@@ -2,11 +2,14 @@ import "@/styles/Cards/CatalogProductCardStyle.css"
 
 // Models
 import { AnyProductType } from "@/models/ProductModel"
+// Context
+import { useProducts } from "@/context/ProductsContext"
 // Images
 import ImageNotFound from "@/assets/images/ImageNotFound.png"
 // Utils
+import { useRouter } from "next/navigation"
+import { useAuth } from "@clerk/nextjs"
 import Image from "next/image"
-import Link from "next/link"
 
 
 export default function CatalogProductCardComponent(
@@ -14,10 +17,24 @@ export default function CatalogProductCardComponent(
     :
     { readonly product: AnyProductType }
 ) {
+    const { updateProductViews } = useProducts()
+    const { getToken } = useAuth()
+    const router = useRouter()
+
+    const handleCardClick = async () => {
+        router.push(`/product/${product._id}`)
+        const token = await getToken()
+        if (!token) {
+            console.error("No se pudo obtener el token de autenticación.")
+            return
+        }
+        await updateProductViews(token, product._id!)
+    }
+
     return (
-        <Link
+        <button
             className="group catalog-product-card-container"
-            href={`/product/${product._id}`}
+            onClick={handleCardClick}
         >
             {/* Product Image Container */}
             <div className="catalog-product-card-image-container">
@@ -60,6 +77,6 @@ export default function CatalogProductCardComponent(
                     </div>
                 </div>
             </div>
-        </Link>
+        </button>
     )
 }

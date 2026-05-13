@@ -81,6 +81,30 @@ export const updateProductController = async (token: string, productData: AnyPro
     }
 }
 
+export const updateProductViewsController = async (token: string, id: string) => {
+    try {
+        const response = await fetch(`${API_URL}/products/views`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ id })
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+            return { error: data.error }
+        }
+
+        return { message: data.message }
+    } catch (error) {
+        console.error('updateProductViews:', (error as Error).message)
+        return { error: 'Error al actualizar las vistas del producto' }
+    }
+}
+
 export const deleteProductController = async (token: string, id: string) => {
     try {
         const response = await fetch(`${API_URL}/products`, {

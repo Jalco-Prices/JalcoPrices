@@ -2,7 +2,9 @@
 import { useProducts } from "@/context/ProductsContext";
 // Icons
 import { SearchIcon } from "@/icons/Icons";
-import Link from "next/link";
+// Utils
+import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 
 export default function NavbarSearchInputComponent(
@@ -10,7 +12,19 @@ export default function NavbarSearchInputComponent(
     :
     { readonly value: string, readonly isSearchOpen: boolean, readonly setSearchText: (text: string) => void, readonly setIsSearchOpen: (isOpen: boolean) => void }
 ) {
-    const { products } = useProducts();
+    const { products, updateProductViews } = useProducts();
+    const { getToken } = useAuth();
+    const router = useRouter();
+
+    const handleProductClick = async (id: string) => {
+        router.push(`/product/${id}`)
+        const token = await getToken()
+        if (!token) {
+            console.error("No se pudo obtener el token de autenticación.")
+            return
+        }
+        await updateProductViews(token, id)
+    }
 
     return (
         <section className={`search-input-container ${isSearchOpen ? 'open' : ''}`}>
@@ -47,14 +61,16 @@ export default function NavbarSearchInputComponent(
                     {products
                         .filter(product => product.nombre.toLowerCase().includes(value.toLowerCase()))
                         .map((product) => (
-                            <Link
+                            <button
                                 key={product._id}
                                 className="search-result-item"
-                                href={`/product/${product._id}`}
-                                onClick={() => setIsSearchOpen(false)}
+                                onClick={() => {
+                                    setIsSearchOpen(false)
+                                    handleProductClick(product._id!)
+                                }}
                             >
                                 {product.nombre}
-                            </Link>
+                            </button>
                         ))
                     }
                 </div>

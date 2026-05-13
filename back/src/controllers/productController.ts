@@ -69,6 +69,29 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
     }
 }
 
+export const updateProductViews = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id: _id } = req.body
+
+        if (!_id) {
+            res.status(400).json({ error: 'ID del producto es requerido' })
+            return
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(_id, { $inc: { vecesVisto: 1 } }, { returnDocument: 'after' })
+
+        if (!updatedProduct) {
+            res.status(404).json({ error: 'Producto no encontrado' })
+            return
+        }
+
+        res.status(200).json({ message: 'Visitas del producto actualizadas correctamente' })
+    } catch (error) {
+        console.error('Error actualizando visitas del producto:', error)
+        res.status(500).json({ error: 'Error actualizando visitas del producto' })
+    }
+}
+
 export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
     try {
         const isAdmin = (req as any).user?.isAdmin
