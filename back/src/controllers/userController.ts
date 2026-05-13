@@ -108,8 +108,8 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
             return
         }
 
-        const userId = req.body.userId as string
-        
+        const userId = req.params.userId as string
+
         if (!userId) {
             res.status(400).json({ error: 'ID de usuario es requerido' })
             return

@@ -101,7 +101,7 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
             return
         }
 
-        const { id: _id } = req.body
+        const { productId: _id } = req.params
 
         if (!_id) {
             res.status(400).json({ error: 'ID del producto es requerido' })

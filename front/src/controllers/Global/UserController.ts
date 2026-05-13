@@ -102,13 +102,12 @@ export const updateUserStatusController = async (token: string, userId: string, 
 
 export const deleteUserController = async (token: string, userId: string) => {
     try {
-        const response = await fetch(`${API_URL}/user/delete/userId`, {
+        const response = await fetch(`${API_URL}/user/delete/${userId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ userId })
+            }
         })
 
         const data = await response.json()

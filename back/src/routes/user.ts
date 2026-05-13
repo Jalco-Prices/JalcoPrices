@@ -8,5 +8,5 @@ router.get('/all', requireAuth, getAllUsers)
 router.get('/is-admin', requireAuth, getUserIsAdmin)
 router.put('/update-role', requireAuth, updateUserRole)
 router.put('/update-status', requireAuth, updateUserStatus)
-router.delete('/delete/userId', requireAuth, deleteUser)
+router.delete('/delete/:userId', requireAuth, deleteUser)
 export default router

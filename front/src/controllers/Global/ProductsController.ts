@@ -107,13 +107,12 @@ export const updateProductViewsController = async (token: string, id: string) =>
 
 export const deleteProductController = async (token: string, id: string) => {
     try {
-        const response = await fetch(`${API_URL}/products`, {
+        const response = await fetch(`${API_URL}/products/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ id })
+            }
         })
 
         const data = await response.json()

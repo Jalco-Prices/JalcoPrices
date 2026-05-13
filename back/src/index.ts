@@ -31,9 +31,14 @@ app.use('/products', productRoutes)
 
 // Start Server
 const start = async (): Promise<void> => {
-    await connectDB()
-    app.listen(PORT, () => {
-        console.log(`✅ Servidor corriendo en http://localhost:${PORT}`)
-    })
+    try {
+        await connectDB()
+        app.listen(PORT, () => {
+            console.log(`✅ Servidor corriendo en http://localhost:${PORT}`)
+        })
+    } catch (error) {
+        console.error('❌ Error al iniciar el servidor:', error)
+        process.exit(1)
+    }
 }
 start()

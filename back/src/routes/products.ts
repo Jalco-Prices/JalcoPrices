@@ -8,7 +8,7 @@ router.get('/', requireAuth, getProducts)
 router.post('/', requireAuth, addProduct)
 router.put('/', requireAuth, updateProduct)
 router.patch('/views', requireAuth, updateProductViews)
-router.delete('/', requireAuth, deleteProduct)
+router.delete('/:productId', requireAuth, deleteProduct)
 
 
 export default router
