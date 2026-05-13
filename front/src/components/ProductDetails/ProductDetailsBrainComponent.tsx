@@ -40,6 +40,7 @@ export default function ProductDetailsBrainComponent(
             :   // User View
                 <ProductDetailsUserComponent
                     product={product}
+                    complementProducts={complementProducts}
                 />
     )
 }
