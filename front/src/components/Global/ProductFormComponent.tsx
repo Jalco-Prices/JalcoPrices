@@ -49,7 +49,7 @@ export default function ProductFormComponent(
     { type, product, complementProducts, localProduct, isShowBarcode, setLocalProduct, setIsShowBarcode }
     :
     {
-        readonly type: typeOptions, readonly product?: ProductType, readonly complementProducts: AnyProductType[], readonly localProduct: ProductType, readonly isShowBarcode: boolean,
+        readonly type: typeOptions, readonly product?: ProductType, readonly complementProducts?: AnyProductType[], readonly localProduct: ProductType, readonly isShowBarcode: boolean,
         readonly setLocalProduct: Dispatch<SetStateAction<ProductType>>, readonly setIsShowBarcode: (show: boolean) => void
     }
 ) {
@@ -344,7 +344,7 @@ export default function ProductFormComponent(
                             </button>
 
                             {/* Content Section */}
-                            {isShowRelatedProducts && complementProducts.length > 0 &&
+                            {isShowRelatedProducts && complementProducts && complementProducts.length > 0 &&
                                 <div className="p-lg pt-0 border-t transition-all duration-300 border-outline-variant/30">
                                     {/* Products Grid */}
                                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-md mt-lg">

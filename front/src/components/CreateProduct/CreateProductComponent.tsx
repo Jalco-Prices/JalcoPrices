@@ -28,6 +28,7 @@ const emptyProduct: ProductType = {
     minimoMayoreo: 1,
     porcentajeUtilidadReal: 0,
     proveedor: "",
+    vecesVisto: 0,
 }
 
 export default function CreateProductComponent() {
