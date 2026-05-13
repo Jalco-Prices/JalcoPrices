@@ -59,7 +59,7 @@ export default function CatalogComponent(
             } else if (selectedOrder === "price-desc") {
                 return b.precioMenudeo - a.precioMenudeo
             }
-            return 0
+            return b.vecesVisto - a.vecesVisto
         })
 
     const products = selectedFilter && selectedFilter !== "all"

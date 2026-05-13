@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import Product from '../models/Product'
 
 const PUBLIC_FIELDS = {
-    _id: 1, nombre: 1, nombreGenerico: 1, categoria: 1, precioMayoreo: 1, precioMenudeo: 1, minimoMayoreo: 1, codigoDeBarras: 1, imagen: 1
+    _id: 1, nombre: 1, nombreGenerico: 1, categoria: 1, precioMayoreo: 1, precioMenudeo: 1, minimoMayoreo: 1, codigoDeBarras: 1, imagen: 1, vecesVisto: 1
 }
 
 export const getProducts = async (req: Request, res: Response): Promise<void> => {

@@ -15,13 +15,13 @@ export type ProductType = {
     minimoMayoreo: number
     codigoDeBarras: string
     imagen: string
-    vecesVisto?: number
+    vecesVisto: number
     createdAt?: string
     updatedAt?: string
 }
 
 export type ProductPublicType = Pick<ProductType,
-    '_id' | 'nombre' | 'nombreGenerico' | 'categoria' | 'precioMayoreo' | 'precioMenudeo' | 'minimoMayoreo' | 'codigoDeBarras' | 'imagen'
+    '_id' | 'nombre' | 'nombreGenerico' | 'categoria' | 'precioMayoreo' | 'precioMenudeo' | 'minimoMayoreo' | 'codigoDeBarras' | 'imagen' | 'vecesVisto'
 >
 
 export type AnyProductType = ProductType | ProductPublicType
