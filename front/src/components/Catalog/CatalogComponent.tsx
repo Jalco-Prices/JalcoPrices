@@ -124,27 +124,29 @@ export default function CatalogComponent(
                 </p>
 
                 {/* Selects Filter & Order Container */}
-                <div className="catalog-selects-container">
-                    {/* Filter Select Button */}
-                    <SelectFilterOrderButtonComponent
-                        label={filtersOptions.find((f) => f.value === selectedFilter)?.label || "Filtrar"}
-                        iconName="filter"
-                        options={filtersOptions}
-                        isShowingOptions={isShowingFilters}
-                        setIsShowingOptions={setIsShowingFilters}
-                        setSelectedOption={handleFilterChange}
-                    />
+                {paginatedProducts.length > 0 &&
+                    <div className="catalog-selects-container">
+                        {/* Filter Select Button */}
+                        <SelectFilterOrderButtonComponent
+                            label={filtersOptions.find((f) => f.value === selectedFilter)?.label || "Filtrar"}
+                            iconName="filter"
+                            options={filtersOptions}
+                            isShowingOptions={isShowingFilters}
+                            setIsShowingOptions={setIsShowingFilters}
+                            setSelectedOption={handleFilterChange}
+                        />
 
-                    {/* Order Select Button */}
-                    <SelectFilterOrderButtonComponent
-                        label={orderOptions.find((o) => o.value === selectedOrder)?.label || "Ordenar"}
-                        iconName="sort"
-                        options={orderOptions}
-                        isShowingOptions={isShowingOrderOptions}
-                        setIsShowingOptions={setIsShowingOrderOptions}
-                        setSelectedOption={handleOrderChange}
-                    />
-                </div>
+                        {/* Order Select Button */}
+                        <SelectFilterOrderButtonComponent
+                            label={orderOptions.find((o) => o.value === selectedOrder)?.label || "Ordenar"}
+                            iconName="sort"
+                            options={orderOptions}
+                            isShowingOptions={isShowingOrderOptions}
+                            setIsShowingOptions={setIsShowingOrderOptions}
+                            setSelectedOption={handleOrderChange}
+                        />
+                    </div>
+                }
             </div>
 
             {/* Products Grid */}
@@ -156,11 +158,13 @@ export default function CatalogComponent(
 
             {/* Pagination Actions */}
             <div className="catalog-pagination-actions-wrapper">
-                <PaginationActionsComponent
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    setCurrentPage={handlePageChange}
-                />
+                {paginatedProducts.length > 0 &&
+                    <PaginationActionsComponent
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        setCurrentPage={handlePageChange}
+                    />
+                }
             </div>
         </section>
     )
