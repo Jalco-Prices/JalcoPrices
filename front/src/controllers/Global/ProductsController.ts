@@ -50,7 +50,7 @@ export const addProductController = async (token: string, newProductData: AnyPro
             return { error: data.error }
         }
 
-        return { message: data.message }
+        return { id: data.id, message: data.message }
     } catch (error) {
         console.error('addProduct:', (error as Error).message)
         return { error: 'Error al agregar el producto' }

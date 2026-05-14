@@ -32,7 +32,7 @@ export const addProduct = async (req: Request, res: Response): Promise<void> => 
         const newProduct = new Product(req.body)
         await newProduct.save()
 
-        res.status(201).json({ message: 'Producto agregado correctamente' })
+        res.status(201).json({ id: newProduct._id, message: 'Producto agregado correctamente' })
     } catch (error) {
         console.error('Error agregando producto:', error)
         res.status(500).json({ error: 'Error agregando producto' })

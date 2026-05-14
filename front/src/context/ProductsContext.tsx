@@ -36,7 +36,7 @@ export const ProductsProvider = (
             return { success: false, error: result.error }
         }
 
-        setProducts(prev => [...prev, newProductData])
+        setProducts(prev => [...prev, { ...newProductData, _id: result.id }])
 
         return { success: true, error: null }
     }, [])
