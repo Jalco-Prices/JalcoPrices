@@ -36,10 +36,10 @@ export default function BarcodeModalComponent(
 
                     {/* Close Button */}
                     <button
-                        className='h-6 cursor-pointer transition-transform active:scale-95'
+                        className='cursor-pointer transition-transform active:scale-95'
                         onClick={() => setIsShowBarcode(false)}
                     >
-                        <XIcon size={"fill"} color='#45464d' />
+                        <XIcon size={24} color='#45464d' />
                     </button>
                 </section>
 
@@ -53,9 +53,7 @@ export default function BarcodeModalComponent(
                                 className="border shrink-0 rounded-full p-2 transition-all cursor-pointer active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 border-outline-variant"
                                 onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
                             >
-                                <div className="h-6">
-                                    <ArrowLeftIcon size={"fill"} color='#45464d' />
-                                </div>
+                                <ArrowLeftIcon size={24} color='#45464d' />
                             </button>
                         }
 
@@ -75,9 +73,7 @@ export default function BarcodeModalComponent(
                                 className="border shrink-0 rounded-full p-2 transition-all cursor-pointer active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 border-outline-variant"
                                 onClick={() => setCurrentIndex(currentIndex + 1)}
                             >
-                                <div className="h-6">
-                                    <ArrowRightIcon size={"fill"} color='#45464d' />
-                                </div>
+                                <ArrowRightIcon size={24} color='#45464d' />
                             </button>
                         }
                     </div>
@@ -128,9 +124,7 @@ export default function BarcodeModalComponent(
                             className="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center hover:bg-surface-container-low transition-colors"
                             onClick={() => setQuantityValue(String(Math.max(1, Number.parseInt(quantityValue) - 1)))}
                         >
-                            <div className='h-6'>
-                                <MinusIcon size={"fill"} />
-                            </div>
+                            <MinusIcon size={24} />
                         </button>
                         
                         <input
@@ -145,9 +139,7 @@ export default function BarcodeModalComponent(
                             className="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center hover:bg-surface-container-low transition-colors"
                             onClick={() => setQuantityValue(String(Number.parseInt(quantityValue) + 1))}
                         >
-                            <div className='h-6'>
-                                <PlusIcon size={"fill"} />
-                            </div>
+                            <PlusIcon size={24} />
                         </button>
                     </div>
                 </section>

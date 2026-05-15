@@ -33,7 +33,7 @@ export default function NavbarSearchInputComponent(
                 {/* Search Icon */}
                 <div className="search-input-icon">
                     <SearchIcon
-                        size={"fill"}
+                        size={20}
                         color="#76777D"
                     />
                 </div>

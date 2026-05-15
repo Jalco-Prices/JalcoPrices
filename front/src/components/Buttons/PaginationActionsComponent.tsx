@@ -40,7 +40,7 @@ export default function PaginationActionsComponent(
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
             >
-                <div className="h-4"><ArrowLeftIcon size={"fill"} /></div>
+                <ArrowLeftIcon size={16} />
             </button>
 
             {/* Page Numbers Buttons */}
@@ -67,7 +67,7 @@ export default function PaginationActionsComponent(
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
             >
-                <div className="h-4"><ArrowRightIcon size={"fill"} /></div>
+                <ArrowRightIcon size={16} />
             </button>
         </section>
     )

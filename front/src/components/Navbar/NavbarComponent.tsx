@@ -54,7 +54,7 @@ export default function NavbarComponent() {
                         }}
                     >
                         <SearchIcon
-                            size={"fill"}
+                            size={26}
                         />
                     </button>
 

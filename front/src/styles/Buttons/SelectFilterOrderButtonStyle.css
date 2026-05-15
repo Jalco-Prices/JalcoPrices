@@ -18,7 +18,7 @@
 }
 
 .select-filter-order-button-icon {
-    @apply shrink-0 h-3.5;
+    @apply shrink-0;
 }
 
 .select-filter-order-button-label {

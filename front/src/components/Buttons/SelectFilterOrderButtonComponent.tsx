@@ -72,8 +72,8 @@ export default function SelectFilterOrderButtonComponent(
                 >
                     {/* Icon */}
                     <div className="select-filter-order-button-icon">
-                        {iconName === 'filter' && <FilterIcon size={"fill"} />}
-                        {iconName === 'sort' && <SortDescendingIcon size={"fill"} />}
+                        {iconName === 'filter' && <FilterIcon size={14} />}
+                        {iconName === 'sort' && <SortDescendingIcon size={14} />}
                     </div>
                     
                     {/* Label */}

@@ -18,15 +18,7 @@
 }
 
 .navbar-search-button {
-    @apply h-6.5 cursor-pointer;
-}
-
-.navbar-user-profile-button-container {
-    @apply h-7 border;
-}
-
-.navbar-user-profile-button {
-    @apply h-full cursor-pointer;
+    @apply cursor-pointer;
 }
 
 

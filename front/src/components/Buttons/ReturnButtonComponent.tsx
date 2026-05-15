@@ -20,12 +20,8 @@ export default function ReturnButtonComponent() {
             className="w-fit h-fit flex items-center gap-2 transition-colors hover:cursor-pointer text-on-surface-variant"
             onClick={handleReturn}
         >
-            <div className="h-5">
-                <ArrowLeftIconSimple
-                    size={"fill"}
-                    color="#45464d"
-                />
-            </div>
+            <ArrowLeftIconSimple size={20} color="#45464d" />
+            
             <p className="font-inter">
                 Regresar
             </p>

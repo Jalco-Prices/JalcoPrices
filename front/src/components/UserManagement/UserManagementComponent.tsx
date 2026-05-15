@@ -133,8 +133,8 @@ export default function UserManagementComponent(
                     {/* User Search Input Container */}
                     <div className="w-full md:w-fit flex items-center border rounded-md border-outline-variant">
                         {/* Icon */}
-                        <div className="h-4.75 pl-2">
-                            <UserSearchIcon size={"fill"} color="#666" />
+                        <div className="pl-2">
+                            <UserSearchIcon size={19} color="#666" />
                         </div>
 
                         {/* User Search Input */}
@@ -241,9 +241,7 @@ export default function UserManagementComponent(
                                                     className="p-2 rounded-lg transition-colors cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 disabled:hover:bg-transparent text-error hover:bg-error-container"
                                                     onClick={() => handleDeleteUser(user.userId!)}
                                                 >
-                                                    <div className="h-6">
-                                                        <TrashIcon size={"fill"} color="#ba1a1a" />
-                                                    </div>
+                                                    <TrashIcon size={24} color="#ba1a1a" />
                                                 </button>
                                             </td>
                                         </tr>

@@ -151,9 +151,7 @@ export default function ProductFormComponent(
                             className="w-full py-sm flex items-center justify-center gap-2 border rounded-lg transition-all hover:cursor-pointer active:scale-95 text-primary border-outline-variant/20 bg-surface-container hover:bg-surface-container-high"
                             onClick={() => setIsShowBarcode(true)}
                         >
-                            <div className="h-5">
-                                <BarcodeIcon size="fill" />
-                            </div>
+                            <BarcodeIcon size={20} />
                             Código de Barras
                         </button>
                     </div>
@@ -182,9 +180,7 @@ export default function ProductFormComponent(
                 <div className="lg:col-span-8 space-y-lg">
                     <section className="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm">
                         <div className="flex items-center gap-sm mb-lg">
-                            <div className="h-6">
-                                <InfoCircleIcon size="fill" color="#0058be" />
-                            </div>
+                            <InfoCircleIcon size={24} color="#0058be" />
                             <h2 className="font-inter text-h3 text-primary">Identidad</h2>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-lg">
@@ -233,9 +229,7 @@ export default function ProductFormComponent(
 
                     <section className="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm">
                         <div className="flex items-center gap-sm mb-lg">
-                            <div className="h-6">
-                                <CashIcon size="fill" color="#0058be" />
-                            </div>
+                            <CashIcon size={24} color="#0058be" />
                             <h2 className="font-inter text-h3 text-primary">Precios</h2>
                         </div>
 
@@ -310,7 +304,7 @@ export default function ProductFormComponent(
                     </section>
 
                     {/* Complement Products Section */}
-                    {type === "details" &&
+                    {type === "details" && complementProducts && complementProducts.length > 0 &&
                         <section className="overflow-hidden rounded-xl border shadow-sm border-outline-variant bg-surface-container-lowest">
                             {/* Section Header */}
                             <button
@@ -320,9 +314,7 @@ export default function ProductFormComponent(
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-sm">
                                     <div className="flex items-center gap-sm">
                                         {/* Section Icon */}
-                                        <div className="h-6">
-                                            <LinkIcon size="fill" color="#0058be" />
-                                        </div>
+                                        <LinkIcon size={24} color="#0058be" />
 
                                         {/* Section Title */}
                                         <h2 className="font-inter text-h3 text-primary">Complementos</h2>
@@ -335,16 +327,14 @@ export default function ProductFormComponent(
                                 </div>
                                 
                                 {/* Arrows Icon */}
-                                <div className="h-6">
-                                    {isShowRelatedProducts
-                                        ?   <ArrowUpIcon size="fill" color="#45464d" />
-                                        :   <ArrowDownIcon size="fill" color="#45464d" />
-                                    }
-                                </div>
+                                {isShowRelatedProducts
+                                    ?   <ArrowUpIcon size={24} color="#45464d" />
+                                    :   <ArrowDownIcon size={24} color="#45464d" />
+                                }
                             </button>
 
                             {/* Content Section */}
-                            {isShowRelatedProducts && complementProducts && complementProducts.length > 0 &&
+                            {isShowRelatedProducts &&
                                 <div className="p-lg pt-0 border-t transition-all duration-300 border-outline-variant/30">
                                     {/* Products Grid */}
                                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-md mt-lg">
@@ -363,9 +353,7 @@ export default function ProductFormComponent(
                                                     {/* Checkmark Icon */}
                                                     {isSelected && (
                                                         <div className="absolute z-10 top-2 right-2 p-0.75 rounded-full flex items-center justify-center bg-secondary">
-                                                            <div className="h-3.75">
-                                                                <CheckIcon size="fill" color="white" />
-                                                            </div>
+                                                            <CheckIcon size={15} color="white" />
                                                         </div>
                                                     )}
 

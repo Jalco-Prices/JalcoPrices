@@ -69,9 +69,7 @@ export default function ProductDetailsUserComponent(
                                     className="shrink-0 h-10.5 max-sm:w-fit px-4 flex items-center gap-2 rounded-lg transition-all active:scale-95 border hover:cursor-pointer text-primary border-outline-variant/20 bg-surface-container hover:bg-surface-container-high"
                                     onClick={() => setIsShowBarcode(true)}
                                 >
-                                    <div className="h-5">
-                                        <BarcodeIcon size={"fill"} />
-                                    </div>
+                                    <BarcodeIcon size={20} />
                                     <span className="font-inter">Código de Barras</span>
                                 </button>
                             </div>
@@ -99,9 +97,7 @@ export default function ProductDetailsUserComponent(
 
                                     <div className="flex justify-between items-center pb-4 border-b border-outline-variant/20">
                                         <span className="font-inter text-on-primary-container italic">Mínimo: {product.minimoMayoreo} uds.</span>
-                                        <div className="h-6">
-                                            <RosetteDiscountCheckIcon size="fill" color="#0058be" />
-                                        </div>
+                                        <RosetteDiscountCheckIcon size={24} color="#0058be" />
                                     </div>
 
                                     <div className="flex justify-between items-center pt-2 font-inter">
@@ -140,9 +136,7 @@ export default function ProductDetailsUserComponent(
                                 >
                                     <div className="flex flex-col sm:flex-row sm:items-center gap-sm">
                                         <div className="flex items-center gap-sm">
-                                            <div className="h-6">
-                                                <LinkIcon size="fill" color="#0058be" />
-                                            </div>
+                                            <LinkIcon size={24} color="#0058be" />
                                             <h2 className="font-inter text-secondary">Complementos</h2>
                                         </div>
 
@@ -150,13 +144,10 @@ export default function ProductDetailsUserComponent(
                                             {selectedProducts.length} SELECCIONADOS
                                         </p>
                                     </div>
-
-                                    <div className="h-6">
-                                        {isShowRelatedProducts
-                                            ? <ArrowUpIcon size="fill" color="#45464d" />
-                                            : <ArrowDownIcon size="fill" color="#45464d" />
-                                        }
-                                    </div>
+                                    {isShowRelatedProducts
+                                        ? <ArrowUpIcon size={24} color="#45464d" />
+                                        : <ArrowDownIcon size={24} color="#45464d" />
+                                    }
                                 </button>
 
                                 {/* Products Grid */}
@@ -179,9 +170,7 @@ export default function ProductDetailsUserComponent(
                                                         {/* Checkmark Icon */}
                                                         {isSelected && (
                                                             <div className="absolute z-10 top-2 right-2 p-0.75 rounded-full flex items-center justify-center bg-secondary">
-                                                                <div className="h-3.75">
-                                                                    <CheckIcon size="fill" color="white" />
-                                                                </div>
+                                                                <CheckIcon size={15} color="white" />
                                                             </div>
                                                         )}
 
