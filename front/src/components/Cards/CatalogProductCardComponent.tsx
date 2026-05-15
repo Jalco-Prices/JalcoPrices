@@ -44,7 +44,7 @@ export default function CatalogProductCardComponent(
                     src={product.imagen == "" || product.imagen == null ? ImageNotFound : product.imagen}
                     className="group-hover:scale-110 catalog-product-card-image"
                     fill
-                    sizes="undefined"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     loading="eager"
                 />
                 

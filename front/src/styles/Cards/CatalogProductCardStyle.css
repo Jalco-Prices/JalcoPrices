@@ -9,7 +9,7 @@
 }
 
 .catalog-product-card-image-container {
-    @apply overflow-hidden aspect-square relative border-b
+    @apply overflow-hidden relative aspect-square border-b
     border-outline-variant bg-surface-container-low;
 }
 
