@@ -8,11 +8,11 @@ import { FilterIcon, SortDescendingIcon } from "@/icons/Icons"
 
 
 export default function SelectFilterOrderButtonComponent(
-    { label, iconName, options, isShowingOptions, setIsShowingOptions, setSelectedOption }
+    { label, iconName, options, isShowingOptions, selectedOption, setIsShowingOptions, setSelectedOption }
     :
     {
         readonly label: string, readonly iconName: string, readonly options: { label: string, value: string }[], readonly isShowingOptions: boolean,
-        readonly setIsShowingOptions: (isShowing: boolean) => void, readonly setSelectedOption: (option: string | null) => void
+        readonly selectedOption: string, readonly setIsShowingOptions: (isShowing: boolean) => void, readonly setSelectedOption: (option: string) => void
     }
 ) {
     const [optionsWidth, setOptionsWidth] = useState<number | null>(null)
@@ -87,7 +87,7 @@ export default function SelectFilterOrderButtonComponent(
                             {options.map((option) => (
                                 <div
                                     key={option.value}
-                                    className="select-filter-order-option"
+                                    className={`select-filter-order-option ${selectedOption === option.value ? 'selected' : ''}`}
                                     onClick={() => {
                                         setSelectedOption(option.value)
                                         setIsShowingOptions(false)

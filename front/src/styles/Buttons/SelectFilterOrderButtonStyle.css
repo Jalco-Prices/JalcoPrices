@@ -44,6 +44,10 @@
     hover:bg-surface-container;
 }
 
+.select-filter-order-option.selected {
+    @apply bg-primary/20 hover:bg-primary/20;
+}
+
 
 .select-filter-order-section-container:has(.select-filter-order-button.open) {
     box-shadow: 

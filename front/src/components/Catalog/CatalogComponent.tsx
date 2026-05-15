@@ -34,8 +34,8 @@ export default function CatalogComponent(
     
     const [isShowingFilters, setIsShowingFilters] = useState(false)
     const [isShowingOrderOptions, setIsShowingOrderOptions] = useState(false)
-    const [selectedFilter, setSelectedFilter] = useState<string | null>(filterParam || null)
-    const [selectedOrder, setSelectedOrder] = useState<string | null>(sortParam || null)
+    const [selectedFilter, setSelectedFilter] = useState<string>(filterParam || "all")
+    const [selectedOrder, setSelectedOrder] = useState<string>(sortParam || "all")
     const [currentPage, setCurrentPage] = useState(pageParam ? Number.parseInt(pageParam, 10) : 1)
 
     const paginationRef = useRef<HTMLDivElement>(null)
@@ -76,12 +76,12 @@ export default function CatalogComponent(
         currentPage * productsPerPage
     )
 
-    const handleFilterChange = (filter: string | null) => {
+    const handleFilterChange = (filter: string) => {
         setSelectedFilter(filter)
         setCurrentPage(1)
     }
 
-    const handleOrderChange = (order: string | null) => {
+    const handleOrderChange = (order: string) => {
         setSelectedOrder(order)
         setCurrentPage(1)
     }
@@ -132,6 +132,7 @@ export default function CatalogComponent(
                             iconName="filter"
                             options={filtersOptions}
                             isShowingOptions={isShowingFilters}
+                            selectedOption={selectedFilter}
                             setIsShowingOptions={setIsShowingFilters}
                             setSelectedOption={handleFilterChange}
                         />
@@ -142,6 +143,7 @@ export default function CatalogComponent(
                             iconName="sort"
                             options={orderOptions}
                             isShowingOptions={isShowingOrderOptions}
+                            selectedOption={selectedOrder}
                             setIsShowingOptions={setIsShowingOrderOptions}
                             setSelectedOption={handleOrderChange}
                         />

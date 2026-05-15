@@ -7,7 +7,8 @@
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "migrate": "ts-node scripts/migrateProducts.ts"
+    "migrate-products": "ts-node scripts/migrateProducts.ts",
+    "migrate-products-between-proyects": "ts-node scripts/migrateProductsBetweenProyects.ts"
   },
   "keywords": [],
   "author": "",
