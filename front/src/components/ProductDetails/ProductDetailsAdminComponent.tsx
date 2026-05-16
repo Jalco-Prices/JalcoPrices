@@ -95,7 +95,7 @@ export default function ProductDetailsAdminComponent(
     // Memoized value to check if there are changes between localProduct and the original product
     const hasChanges = useMemo(() => {
         const textFields: (keyof ProductType)[] = [
-            'nombre', 'categoria', 'nombreGenerico', 'codigoDeBarras', 'proveedor'
+            'nombre', 'categoria', 'nombreGenerico', 'codigoDeBarras', 'imagen', 'proveedor'
         ]
         const numberFields: (keyof ProductType)[] = [
             'precioMenudeo', 'precioMayoreo', 'precioTienda',
