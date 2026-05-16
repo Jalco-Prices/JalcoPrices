@@ -124,7 +124,7 @@ export default function CatalogComponent(
                 </p>
 
                 {/* Selects Filter & Order Container */}
-                {paginatedProducts.length > 0 &&
+                {allProducts.length > 0 &&
                     <div className="catalog-selects-container">
                         {/* Filter Select Button */}
                         <SelectFilterOrderButtonComponent
