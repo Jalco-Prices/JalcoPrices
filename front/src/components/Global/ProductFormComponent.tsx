@@ -59,6 +59,8 @@ export default function ProductFormComponent(
     const [selectedProducts, setSelectedProducts] = useState<AnyProductType[]>([]);
 
     const updatedAtRef = useRef(product?.updatedAt)
+    const wholeSaleWithComplementsPrice = selectedProducts.reduce((total, p) => total + p.precioMayoreo, localProduct.precioMayoreo)
+    const retailWithComplementsPrice = selectedProducts.reduce((total, p) => total + p.precioMenudeo, localProduct.precioMenudeo)
 
     // Handle complement products selection
     const handleToggleProduct = (product: AnyProductType) => {
@@ -237,7 +239,7 @@ export default function ProductFormComponent(
                             <ProductDetailsInput
                                 id="product-retail-price"
                                 label="Precio Menudeo"
-                                value={localProduct.precioMenudeo}
+                                value={selectedProducts.length > 0 ? retailWithComplementsPrice : localProduct.precioMenudeo}
                                 setValue={(v) => setField('precioMenudeo', v as number)}
                                 symbol="$" isNumber={true}
                                 wasChanged={product && Number(localProduct.precioMenudeo) !== Number(product.precioMenudeo)}
@@ -245,7 +247,7 @@ export default function ProductFormComponent(
                             <ProductDetailsInput
                                 id="product-wholesale-price"
                                 label="Precio Mayoreo"
-                                value={localProduct.precioMayoreo}
+                                value={selectedProducts.length > 0 ? wholeSaleWithComplementsPrice : localProduct.precioMayoreo}
                                 setValue={(v) => setField('precioMayoreo', v as number)}
                                 symbol="$" isNumber={true}
                                 wasChanged={product && Number(localProduct.precioMayoreo) !== Number(product.precioMayoreo)}

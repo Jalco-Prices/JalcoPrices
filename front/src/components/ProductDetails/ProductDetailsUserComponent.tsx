@@ -32,6 +32,9 @@ export default function ProductDetailsUserComponent(
         });
     };
 
+    const wholeSaleWithComplementsPrice = selectedProducts.reduce((total, p) => total + p.precioMayoreo, product.precioMayoreo)
+    const retailWithComplementsPrice = selectedProducts.reduce((total, p) => total + p.precioMenudeo, product.precioMenudeo)
+
     return (
         <>
             <section className="section-container">
@@ -92,7 +95,7 @@ export default function ProductDetailsUserComponent(
                                 <div className="p-6 rounded-xl space-y-4 bg-surface-container-low">
                                     <div className="flex justify-between items-center font-inter">
                                         <span className="text-on-surface-variant">Precio Mayoreo</span>
-                                        <span className="text-primary">${product.precioMayoreo}</span>
+                                        <span className="text-primary">${selectedProducts.length > 0 ? wholeSaleWithComplementsPrice : product.precioMayoreo}</span>
                                     </div>
 
                                     <div className="flex justify-between items-center pb-4 border-b border-outline-variant/20">
@@ -102,7 +105,7 @@ export default function ProductDetailsUserComponent(
 
                                     <div className="flex justify-between items-center pt-2 font-inter">
                                         <span className="text-on-surface-variant">Precio Menudeo</span>
-                                        <span className="text-primary">${product.precioMenudeo}</span>
+                                        <span className="text-primary">${selectedProducts.length > 0 ? retailWithComplementsPrice : product.precioMenudeo}</span>
                                     </div>
                                 </div>
                             
