@@ -25,7 +25,7 @@ export default function NavbarSearchInputComponent(
             console.error("No se pudo obtener el token de autenticación.")
             return
         }
-        await updateProductViews(token, id)
+        updateProductViews(token, id)
     }
 
     return (

@@ -30,7 +30,7 @@ export default function CatalogProductCardComponent(
             console.error("No se pudo obtener el token de autenticación.")
             return
         }
-        await updateProductViews(token, product._id!)
+        updateProductViews(token, product._id!)
     }
 
     return (
