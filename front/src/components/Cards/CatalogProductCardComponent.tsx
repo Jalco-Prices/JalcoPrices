@@ -9,6 +9,7 @@ import ImageNotFound from "@/assets/images/ImageNotFound.png"
 // Utils
 import { useRouter } from "next/navigation"
 import { useAuth } from "@clerk/nextjs"
+import { toast } from "sonner"
 import Image from "next/image"
 
 
@@ -22,6 +23,7 @@ export default function CatalogProductCardComponent(
     const router = useRouter()
 
     const handleCardClick = async () => {
+        toast.info("Cargando producto...", { duration: 1000 })
         router.push(`/product/${product._id}`)
         const token = await getToken()
         if (!token) {

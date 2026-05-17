@@ -5,6 +5,7 @@ import { SearchIcon } from "@/icons/Icons";
 // Utils
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import { toast } from "sonner"
 
 
 export default function NavbarSearchInputComponent(
@@ -17,6 +18,7 @@ export default function NavbarSearchInputComponent(
     const router = useRouter();
 
     const handleProductClick = async (id: string) => {
+        toast.info("Cargando producto...", { duration: 1000 })
         router.push(`/product/${id}`)
         const token = await getToken()
         if (!token) {

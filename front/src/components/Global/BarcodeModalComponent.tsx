@@ -8,20 +8,25 @@ import Barcode from 'react-barcode'
 
 
 export default function BarcodeModalComponent(
-    { name, barcode, menudeo, mayoreo, selectedProducts, setIsShowBarcode }
+    { name, barcode, menudeo, mayoreo, minimoMayoreo, selectedProducts, setIsShowBarcode }
     :
-    { readonly name: string, readonly barcode: string, readonly menudeo: number, readonly mayoreo: number, readonly selectedProducts: AnyProductType[], readonly setIsShowBarcode: (show: boolean) => void }
+    { readonly name: string, readonly barcode: string, readonly menudeo: number, readonly mayoreo: number, readonly minimoMayoreo: number, readonly selectedProducts: AnyProductType[], readonly setIsShowBarcode: (show: boolean) => void }
 ) {
     const [isQuantityMode, setIsQuantityMode] = useState(false)
     const [quantityValue, setQuantityValue] = useState("1")
     const [currentIndex, setCurrentIndex] = useState(0)
 
     const barCodes = [
-        { name: name, barcode: barcode, menudeo: menudeo, mayoreo: mayoreo }
+        { name: name, barcode: barcode, menudeo: menudeo, mayoreo: mayoreo, minimoMayoreo: minimoMayoreo }
     ]
+    let totalWholesaleMin = minimoMayoreo
     selectedProducts.forEach((product) => {
-        barCodes.push({ name: product.nombre, barcode: product.codigoDeBarras, menudeo: product.precioMenudeo, mayoreo: product.precioMayoreo })
+        barCodes.push({ name: product.nombre, barcode: product.codigoDeBarras, menudeo: product.precioMenudeo, mayoreo: product.precioMayoreo, minimoMayoreo: product.minimoMayoreo })
+        totalWholesaleMin = Math.max(totalWholesaleMin, product.minimoMayoreo)
     })
+
+    const totalRetailSum = selectedProducts.reduce((total, product) => total + product.precioMenudeo, menudeo)
+    const totalWholesaleSum = selectedProducts.reduce((total, product) => total + product.precioMayoreo, mayoreo)
 
     return (
         <section className="z-100 fixed top-0 left-0 h-svh w-full flex items-center justify-center bg-transparent">
@@ -79,15 +84,36 @@ export default function BarcodeModalComponent(
                     </div>
 
                     {/* Barcode Product Name */}
-                    <div className="w-full text-center font-inter">
+                    <div className="w-full font-inter">
                         <h3 className="mb-xs font-medium text-center text-primary">
                             {barCodes[currentIndex]?.name || "Producto sin nombre"} {isQuantityMode && <span className='font-bold'>* {quantityValue}</span>}
                         </h3>
 
+                        {/* Quantity Info if Quantity Mode is Active */}
                         {isQuantityMode &&
-                            <div className='text-sm text-on-surface-variant'>
-                                <p>Menudeo: <span className='font-bold'>{Number(Number.parseInt(quantityValue) * barCodes[currentIndex]?.menudeo).toFixed(2) || "0.00"}</span></p>
-                                <p>Mayoreo: <span className='font-bold'>{Number(Number.parseInt(quantityValue) * barCodes[currentIndex]?.mayoreo).toFixed(2) || "0.00"}</span></p>
+                            <div className='flex flex-col items-center gap-5'>
+                                <div className='text-sm text-on-surface-variant'>
+                                    <p>Menudeo: <span className='font-bold'>${Number(Number.parseInt(quantityValue) * barCodes[currentIndex]?.menudeo).toFixed(2) || "0.00"}</span></p>
+                                    <p>Mayoreo: <span className='font-bold'>${Number(Number.parseInt(quantityValue) * barCodes[currentIndex]?.mayoreo).toFixed(2) || "0.00"}</span></p>
+                                    <p>May mín: <span className='font-bold'>{barCodes[currentIndex]?.minimoMayoreo || "0"}</span> {barCodes[currentIndex]?.minimoMayoreo == 1 ? "ud." : "uds."}</p>
+                                </div>
+
+                                {/* Total Quantity Info */}
+                                {selectedProducts.length > 0 &&
+                                    <div>
+                                        <h3 className='mb-xs font-medium text-center text-primary'>
+                                            Total de {quantityValue} de cada uno
+                                        </h3>
+
+                                        <div className='flex flex-col items-center'>
+                                            <div className='text-sm text-on-surface-variant'>
+                                                <p>Menudeo: <span className='font-bold'>${Number(Number.parseInt(quantityValue) * totalRetailSum).toFixed(2) || "0.00"}</span></p>
+                                                <p>Mayoreo: <span className='font-bold'>${Number(Number.parseInt(quantityValue) * totalWholesaleSum).toFixed(2) || "0.00"}</span></p>
+                                                <p>May mín: <span className='font-bold'>{totalWholesaleMin}</span> {totalWholesaleMin == 1 ? "ud." : "uds."}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         }
                     </div>
