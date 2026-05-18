@@ -5,6 +5,7 @@
 import ReturnButtonComponent from "../Buttons/ReturnButtonComponent"
 import ProductFormComponent from "../Global/ProductFormComponent"
 import SecondaryActionButtonComponent from "../Buttons/SecondaryActionButtonComponent"
+import DeleteModalComponent from "../Global/DeleteModalComponent"
 // Models
 import { ProductType, AnyProductType } from "@/models/ProductModel"
 // Utils
@@ -26,6 +27,7 @@ export default function ProductDetailsAdminComponent(
     const [isDeleteButtonDisabled, setIsDeleteButtonDisabled] = useState(false)
     const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true)
     const [isShowBarcode, setIsShowBarcode] = useState(false)
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
     // Function to delete product
     const handleDeleteProduct = async () => {
@@ -133,11 +135,12 @@ export default function ProductDetailsAdminComponent(
                 <div className="flex max-[30rem]:flex-col gap-6">
                     <button
                         disabled={isDeleteButtonDisabled}
-                        className="px-lg py-sm shadow-sm border rounded-lg font-inter cursor-pointer transition-all active:scale-95 text-error border-error hover:bg-error-container disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 disabled:text-white disabled:border-primary disabled:bg-primary"
-                        onClick={handleDeleteProduct}
+                        className="px-lg py-sm shadow-sm border rounded-lg font-inter cursor-pointer transition-all text-error border-error hover:bg-error-container active:scale-95"
+                        onClick={() => setIsDeleteModalOpen(true)}
                     >
                         Eliminar
                     </button>
+                    
                     <SecondaryActionButtonComponent
                         idName="update-button"
                         label="Actualizar"
@@ -159,6 +162,15 @@ export default function ProductDetailsAdminComponent(
                 isShowBarcode={isShowBarcode}
                 setLocalProduct={setLocalProduct}
                 setIsShowBarcode={setIsShowBarcode}
+            />
+
+            {/* Delete Modal */}
+            <DeleteModalComponent
+                toDeleteName={localProduct.nombre}
+                isDeleteButtonDisabled={isDeleteButtonDisabled}
+                isOpen={isDeleteModalOpen}
+                setIsOpen={setIsDeleteModalOpen}
+                deleteAction={handleDeleteProduct}
             />
         </section>
     )

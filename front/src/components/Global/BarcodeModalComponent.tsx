@@ -29,8 +29,14 @@ export default function BarcodeModalComponent(
     const totalWholesaleSum = selectedProducts.reduce((total, product) => total + product.precioMayoreo, mayoreo)
 
     return (
-        <section className="z-100 fixed top-0 left-0 h-svh w-full flex items-center justify-center bg-transparent">
-            <div className="z-102 relative max-w-130 p-lg w-full flex flex-col gap-lg rounded-xl shadow-2xl border font-inter bg-surface-container-lowest border-outline-variant">
+        <section className="fixed inset-0 z-100 flex items-center justify-center">
+            {/* Backdrop - detrás del contenido */}
+            <button
+                className="absolute inset-0 backdrop-blur-sm bg-black/60"
+                onClick={() => setIsShowBarcode(false)}
+            />
+
+            <div className="relative z-1 max-w-130 w-full p-lg flex flex-col gap-lg rounded-xl shadow-2xl border font-inter bg-surface-container-lowest border-outline-variant">
                 {/* Header Section */}
                 <section className='flex justify-between'>
                     {/* Title & Barcode State */}
@@ -62,7 +68,8 @@ export default function BarcodeModalComponent(
                             </button>
                         }
 
-                        <div className='flex-1 p-lg flex justify-center items-center rounded-lg border border-outline-variant bg-white'>
+                        {/* Barcode — solo esta parte hace scroll en x */}
+                        <div className='overflow-x-auto flex-1 p-lg flex justify-center items-center rounded-lg border border-outline-variant bg-white'>
                             <Barcode
                                 value={isQuantityMode ? quantityValue || "1" : barCodes[currentIndex]?.barcode || "000"}
                                 format="CODE128"
@@ -170,11 +177,6 @@ export default function BarcodeModalComponent(
                     </div>
                 </section>
             </div>
-
-            <button
-                className="z-101 absolute top-0 left-0 w-full h-full backdrop-blur-sm bg-black/60"
-                onClick={() => setIsShowBarcode(false)}
-            />
         </section>
     )
 }
