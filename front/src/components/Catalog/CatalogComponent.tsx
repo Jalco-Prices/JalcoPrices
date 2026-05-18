@@ -71,6 +71,9 @@ export default function CatalogComponent(
 
     const productsPerPage = useProductsPerPage()
     const totalPages = Math.ceil(products.length / productsPerPage)
+    if (currentPage > totalPages && totalPages > 0) {
+        setCurrentPage(totalPages)
+    }
     const paginatedProducts = products.slice(
         (currentPage - 1) * productsPerPage,
         currentPage * productsPerPage
