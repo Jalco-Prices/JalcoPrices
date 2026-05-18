@@ -67,7 +67,7 @@ export const ProductsProvider = (
         setProducts(prev =>
             prev.map(product =>
                 product._id === id
-                    ? { ...product, vistas: product.vecesVisto + 1 }
+                    ? { ...product, vecesVisto: product.vecesVisto + 1 }
                     : product
             )
         )

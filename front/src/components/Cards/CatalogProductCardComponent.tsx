@@ -14,27 +14,34 @@ import Image from "next/image"
 
 
 export default function CatalogProductCardComponent(
-    { product }
+    { product, isShowingProduct, setIsShowingProduct }
     :
-    { readonly product: AnyProductType }
+    { readonly product: AnyProductType, readonly isShowingProduct: boolean, readonly setIsShowingProduct: (value: boolean) => void }
 ) {
     const { updateProductViews } = useProducts()
     const { getToken } = useAuth()
     const router = useRouter()
 
     const handleCardClick = async () => {
+        if (isShowingProduct) return
+        setIsShowingProduct(true)
         toast.info("Cargando producto...", { duration: 1000 })
         router.push(`/product/${product._id}`)
         const token = await getToken()
         if (!token) {
             console.error("No se pudo obtener el token de autenticación.")
+            setIsShowingProduct(false)
             return
         }
         updateProductViews(token, product._id!)
+            .then(() => {
+                setIsShowingProduct(false)
+            })
     }
 
     return (
         <button
+            disabled={isShowingProduct}
             className="group catalog-product-card-container"
             onClick={handleCardClick}
         >
