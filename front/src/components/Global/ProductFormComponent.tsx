@@ -146,7 +146,7 @@ export default function ProductFormComponent(
                                 fill
                                 className="object-cover"
                                 sizes="undefined"
-                                loading="eager"
+                                loading={localProduct.imagen == "" || localProduct.imagen == null ? "eager" : "lazy"}
                                 unoptimized={true}
                             />
                         </div>

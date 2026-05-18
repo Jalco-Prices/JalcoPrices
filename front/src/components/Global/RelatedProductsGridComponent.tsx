@@ -65,8 +65,9 @@ export default function RelatedProductsGridComponent(
                                         src={product.imagen == "" || product.imagen == null ? ImageNotFound : product.imagen}
                                         alt={`${product.nombre} Image`}
                                         fill
+                                        sizes="80px"
                                         className="object-cover"
-                                        loading="eager"
+                                        loading={product.imagen == "" || product.imagen == null ? "eager" : "lazy"}
                                     />
                                 </div>
 

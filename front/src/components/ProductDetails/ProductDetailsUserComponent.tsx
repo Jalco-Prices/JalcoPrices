@@ -52,7 +52,7 @@ export default function ProductDetailsUserComponent(
                                 fill
                                 className="object-cover"
                                 sizes="undefined"
-                                loading="eager"
+                                loading={product.imagen == "" || product.imagen == null ? "eager" : "lazy"}
                             />
                         </div>
                     </div>
